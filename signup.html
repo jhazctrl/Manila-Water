@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - Manila Water</title>
+  <link rel= "icon" href= "img/logo_mnlwater.png" type= "image/png">
+  <link rel="stylesheet" href="css/choices.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/s_signup.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+    <a class="back-button" href="index.html">← Back</a>
+  </header>
+
+  <div class="signup-container">
+    <img src="img/ic_loginUser2.png" alt="User Icon">
+    <form id="signUpForm">
+      <div class="signup-row">
+        <input id="firstName" type="text" placeholder="First Name" required />
+        <input id="lastName" type="text" placeholder="Last Name" required />
+      </div>
+      <input type="text" placeholder="Unit/House No., Floor, Subdivision/Compound" required />
+      
+      
+      <div class="custom_select">
+        <select id="barangayDropdown" required>
+          <option value="" disabled selected>Barangay</option>
+        </select>
+      </div>
+      
+      <div class="custom_select">
+        <select id="streetDropdown" required>
+          <option value="" disabled selected>Street</option>
+        </select>
+      </div>
+      
+      <input id="email" type="email" placeholder="Email" required />
+      <div class="signup-row">
+        <div class="password-wrapper">
+          <input type="password" id="password" placeholder="Password">
+            <div id="passwordTooltip" class="password-tooltip">
+              <p><i class="fa fa-times"></i> At least 8 characters</p>
+              <p><i class="fa fa-times"></i> At least one uppercase letter</p>
+              <p><i class="fa fa-times"></i> At least one number</p>
+              <p><i class="fa fa-times"></i> At least one special character</p>
+              <div class="strength-bar">
+                <div id="strengthLevel"></div>
+              </div>
+            </div>
+          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+        </div>
+        <div class="password-wrapper">
+          <input id="confirmPassword" type="password" placeholder="Confirm Password" required />
+          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+        </div>
+      </div>
+
+      <button id="signUp_btn" type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Log In</a></p>
+  </div>
+  
+  <script src="js/choices.min.js"></script>
+  <script src="js/js_signup.js"></script>
+</body>
+</html>

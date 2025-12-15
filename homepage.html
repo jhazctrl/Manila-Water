@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manila Water Interruption Advisories</title>
+  <link rel= "icon" href= "img/logo_mnlwater.png" type= "image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <link rel="stylesheet" href="css/s_homepage.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+    <div class="icon-bar">
+  <!--    <img src="img/ic_user.png" alt="User Icon" onclick="goToProfile()" />
+      <img src="img/ic_billing.png" alt="Billing Icon" onclick="showBillingPopup()" /> -->
+      <button class="logout-button" onclick="showLogoutPopup()">Logout</button>
+    </div> 
+    <div id="mobile-menu-toggle" class="mobile-menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+  <div class="mobile-menu-items">
+<!--    <div class="mobile-menu-item" onclick="goToProfile()">
+      <img src="img/ic_user.png" alt="User Icon" />
+      <span>Profile</span>
+    </div>
+    <div class="mobile-menu-item" onclick="showBillingPopup()">
+      <i class="fas fa-file-invoice-dollar" style="color: #000;"></i>
+      <span>Billing</span>
+    </div> -->
+    <div class="mobile-menu-item logout" onclick="showLogoutPopup()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </div>
+  </div>
+</div>
+<!-- ADVISORY SECTION -->
+  <div class="container">
+    <section class="advisory-section">
+      <h2>WATER INTERRUPTION ADVISORIES</h2>
+      <div class="controls-container">
+        <img src="img/ic_search.jpg" alt="Search" />
+        <input type="text" class="search-bar" placeholder="Type in Barangay / Address for report check" />
+      </div>
+
+      <div class="table-container">
+        <div class="table-scroll-wrapper">
+          <div class="loading loading-pulse">
+            <div class="loader"></div>
+            <div class="loading-text">Loading advisories...</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Advisories will be loaded here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTS SECTION -->
+    <section class="reports-section">
+      <div class="reports-layout">
+        <div class="report-left">
+          <div class="report-title">Complaints</div>
+          <div class="filing-tips-box">
+          <h3><i class="fas fa-info-circle"></i> Manila Water Sampaloc Filing Tips</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Provide your <strong>complete address</strong> so we can locate and assist you quickly.</li>
+            <li><i class="fas fa-tools"></i> Select the <strong>correct problem type</strong> (e.g., no water, low pressure).</li>
+            <li><i class="fas fa-edit"></i> Use the “Others” option only if needed, and clearly <strong>describe the issue</strong>.</li>
+            <li><i class="fas fa-clock"></i> Indicate <strong>how long the issue has been happening</strong>.</li>
+            <li><i class="fas fa-camera"></i> Upload a <strong>clear photo</strong> (e.g., meter, faucet, discolored water) if available.</li>
+          </ul>
+          <p style="margin-top: 10px; font-size: 0.95em; color: #666;">
+            These tips help our Sampaloc team address your concern more efficiently. Thank you for your cooperation!
+          </p>
+        </div>
+        </div>
+        <div class="report-right">
+          <div class="report-row-container">
+            <div class="report-search">
+              <img src="img/ic_search.jpg" alt="Search Icon" />
+              <input type="text" placeholder="Type in Barangay / Address for report check" />
+            </div>
+            <div class="report-box-wrapper">
+              <div id="report-box" class="report-box"></div>
+            </div>
+            <button id="openReportForm_btn" class="submit-report-button">File a complaint</button>
+          </div>
+        </div>
+      </div>
+    </section>
+   
+
+    <!-- ANALYTICS 
+    <section class="analytics-section">
+        <div class="analytics-container"> -->
+            <!-- Header and Tabs Row 
+            <div class="analytics-header-row">
+                <div class="analytics-header">
+                    <h1>Analytics</h1>
+                    <p>Interruption Patterns & Service Overview</p>
+                </div>
+                
+                <div class="analytics-tabs">
+                    <button class="tab-button active" onclick="switchTab(event, 'plan')">Plan</button>
+                    <button class="tab-button" onclick="switchTab(event, 'trends')">Trends</button>
+                   
+                </div>
+            </div> -->
+
+            <!-- Content 
+            <div class="analytics-content"> -->
+                <!-- Plan Tab 
+                <div class="tab-content active" id="plan">
+                    <div class="content-top">
+                        <div class="content-header">
+                            <h2>Know What to Expect</h2>
+                            <p>Water service interruption patterns and insights</p>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card avg-duration">
+                                <h3>Most Affected Hour</h3>
+                                <div id="avgDuration" class="value">Hours</div>
+                            </div>
+                            <div class="info-card most-interrupted">
+                                <h3>Most Interrupted Day</h3>
+                                <div id="mostInterrupted" class="value">Day</div>
+                            </div>
+                            <div class="info-card least-interrupted">
+                                <h3>Least Interrupted Day</h3>
+              
+                                <div id="leastInterrupted" class="value">Day</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="peak-problems-section">
+                                <div class="chart-container">
+                                    <canvas id="peakDays"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-right">
+                            <div class="heatmap-section">
+                                <div class="heatmap-header-row">
+                                <h3 style="margin-bottom: 10px;">Most Affected Hours of the Day</h3>
+                                <span id="heatmapInfoIcon" class="heatmap-info-icon" title="What does this mean?">
+                                <i class="fas fa-info-circle"></i>
+                                <div id="heatmapTooltip" class="heatmap-tooltip">
+                                  <div class="tooltip-title">Hi! Greetings from Manila Water Sampaloc</div>
+                                  <span>This heatmap shows <b>how often water interruptions occur at specific hours of the week.</b></span><br>
+                                  <span>The darker the color, the more frequent the interruptions during that time.</span><br>
+                                  <span>Use this info to plan ahead — like scheduling laundry, showers, or cooking when risk is lower.</p></span>
+                                </div>
+                                </span>
+                                </div>
+                                <div class="chart-container" style="height: 260px;">
+                                    <canvas id="heatmap"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Trends Tab 
+                <div class="tab-content" id="trends">
+                    <div class="content-top">
+                        <div class="content-header">
+                            <h2>Service Planning</h2>
+                            <p>Planned maintenance and scheduled interruptions</p>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <h3>Scheduled</h3>
+                                <div class="value">3</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>This Week</h3>
+                                <div class="value">1</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>Next Week</h3>
+                                <div class="value">2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="peak-problems-section">
+                                <h3>Maintenance Schedule</h3>
+                                <div style="height: 280px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.3); border-radius: 10px; margin-top: 10px;">
+                                    <span style="color: #2d3436; opacity: 0.7;">Calendar view here</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-right">
+                            <div class="graph-placeholder">
+                                Planning timeline visualization
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    </section> -->
+
+
+    <footer class="footer">
+      <div class="footer-overlay"></div>
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <div class="footer-left">
+            <div class="footer-bottom-top">
+              <div class="logos-section">
+                <div class="logos">
+                  <img src="img/logo_sampaloc.png" alt="City logo" />
+                  <img src="img/logo_mw1.png" alt="Manila Water logo" />
+                </div>
+              </div>
+          </div>
+          <div class="footer-bottom-bottom">
+            <div class="copyright-section">
+              &copy; 2025 Manila Water - Sampaloc. All rights reserved.
+            </div>
+          </div>
+          </div>
+
+         
+          <div class="divider-vertical"></div>
+         
+          <div class="address-section">
+            <p>MWSS Administration Building 489</p>
+            <p>Katipunan Road, Balara Quezon City</p>
+            <p>Philippines 1105</p>
+          </div>
+         
+          <div class="divider-vertical"></div>
+         
+          <div class="contact-section">
+            <div class="contact-info-wrapper">
+              <div class="hotline-social-wrapper">
+                <p class="hotline">Hotline: 1627 | (02) 8403 2410</p>
+                <div class="social-icons">
+                  <a href="https://www.facebook.com/manilawater/" target="_blank">
+                    <img src="img/ic_facebook.png" alt="Facebook" />
+                  </a>
+                  <a href="https://x.com/ManilaWaterPH" target="_blank">
+                    <img src="img/ic_twitter.png" alt="Twitter" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+
+  <div class="logout-popup" id="logoutPopup">
+    <div class="logout-popup-content">
+      <h3>Are you sure you want to log out?</h3>
+      <button class="yes-btn" onclick="confirmLogout()">Yes</button>
+      <button class="no-btn" onclick="hideLogoutPopup()">No</button>
+    </div>
+  </div>
+
+<!--
+<div class="billing-popup" id="billingPopup">
+  <div class="billing-popup-content">
+       <div class="billing-close-top" onclick="hideBillingPopup()">×</div>
+    <div class="billing-popup-header">
+      <h2>Billing Statement</h2>
+    </div>
+    <div class="billing-popup-body">
+      <div class="billing-info-row">
+        <span class="label">Name:</span>
+        <span class="value"></span>
+      </div>
+      <div class="billing-info-row">
+        <span class="label">Balance:</span>
+        <span class="value amount"></span>
+      </div>
+    </div>
+    <div class="billing-popup-footer">
+      <button class="pay-button" onclick="openMWSS()">Pay via Mobile Application</button>
+      <p class="billing-note">Manage and pay your bills through our app</p>
+    </div>
+
+  </div>
+</div> -->
+
+<!-- Submit Report Popup -->
+<!-- Submit Report Popup -->
+<div class="report-popup" id="reportPopup">
+  <div class="report-popup-content">
+    <span class="close-btn" onclick="hideReportPopup()">×</span>
+    
+    <!-- HEADER SECTION - GRAYISH BACKGROUND -->
+    <div class="report-popup-header">
+      <h2>Water Problem Report</h2>
+      <p class="subheading">Please provide details about the water issue you're experiencing.</p>
+    </div>
+    
+    <!-- FORM BODY SECTION - WHITE BACKGROUND -->
+    <div class="report-popup-form-body">
+      <form id="reportForm">
+        <div class="form-row">
+          <input id="contactNum_inp" type="tel" placeholder="Contact Number" required>
+        </div>
+        <div class="form-row">
+          <input id="address_inp" type="text" placeholder="Unit/House No., Floor, Subdivision/Compound" required>
+        </div>
+        <!-- BARANGAY DROPDOWN -->
+        <div class="form-row">
+          <div class="custom_select">
+            <select id="barangayDropdown" required>
+              <option value="" disabled selected>Barangay</option>
+            </select>
+          </div>
+          <!-- STREET DROPDOWN -->
+          <div class="custom_select">
+            <select id="streetDropdown" required>
+              <option value="" disabled selected>Street</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ISSUE TYPE RADIO BUTTONS -->
+        <label>Water Problem Type:</label>
+        <div class="radio-group-container">
+          <div class="radio-group"></div>
+        </div>
+        
+        <!-- Other problem description input field, displayed when "Other" radio is selected -->
+        <div id="otherInputContainer">
+          <input id="otherInput" type="text" placeholder="Please specify..." style="display:none;">
+        </div>
+
+        <!-- DURATION DROPDOWN -->
+        <div class="custom_select">
+          <select id="durationDropdown" required>
+            <option value="" disabled selected>How long has this been occurring?</option>
+          </select>
+        </div>
+
+        <label>Upload Photos (if available):</label>
+        <input id="uploadPhoto_inp" type="file" accept="image/*" multiple>
+
+        <div class="form-buttons">
+          <button type="button" onclick="hideReportPopup()">Cancel</button>
+          <button id="submitReport_btn" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--------------------------- PAGE MAINTENANCE POP UP  ------------------------>
+<div id="trendsComingSoon" class="coming-soon-modal" style="display:none;">
+  <div class="coming-soon-content">
+    <div class="coming-soon-icon">
+      <i class="fas fa-tools"></i>
+    </div>
+    <h2>New Insights Are On the Way</h2>
+    <p>We're working on powerful tools to help you better understand water service patterns and reliability.</p>
+    <blockquote>
+      Hang tight — this section is currently under development and will be available soon.
+    </blockquote>
+    <button id="closeComingSoon" class="coming-soon-close">Close</button>
+  </div>
+</div>
+
+<!--------------------------- DURATION DROPDOWN------------------------>
+
+<div class="confirm-popup" id="cancelReportPopup">
+  <div class="confirm-popup-content">
+    <h3>Are you sure you want to cancel this report?</h3>
+    <button onclick="cancelReport()">Yes</button>
+    <button onclick="hideCancelPopup()">No</button>
+  </div>
+</div>
+
+<div class="confirm-popup" id="confirmSubmitPopup">
+  <div class="confirm-popup-content">
+    <h3>Are you sure you want to submit this report?</h3>
+    <button onclick="submitReport()">Yes</button>
+    <button onclick="hideConfirmPopup()">No</button>
+  </div>
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script src="js/js_homepage.js" defer></script>
+</body>
+</html> 

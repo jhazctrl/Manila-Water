@@ -1,0 +1,406 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: url('../img/bg_homepage.jpg') center / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 10px 15px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  z-index: 999;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.back-button {
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+}
+
+.signup-container {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px 25px; 
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  max-width: 650px;
+  width: 90%;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.signup-container img {
+  width: 80px; 
+  margin-bottom: 10px; 
+}
+
+.signup-row {
+  display: flex;
+  gap: 10px;
+}
+
+.signup-row input {
+  flex: 1;
+}
+
+.signup-container input,
+.choices__inner {
+  width: 100% !important;
+  padding: 8px 12px !important; 
+  margin: 5px 0 !important; 
+  border: none;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 14px !important;
+  font-family: 'Poppins', sans-serif;
+  outline: none !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+  text-align: left;
+  height: auto !important; 
+  min-height: unset !important; 
+}
+
+.signup-container input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.signup-container input:focus {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.3);
+}
+
+/* FOR DROPDOWN */
+
+.custom-select {
+  position: relative;
+}
+
+.choices {
+  width: 100% !important;
+  margin-bottom: 5px;
+}
+
+.choices.is-focused .choices__inner {
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  border: none !important;
+}
+
+
+.choices__list--single {
+  padding: 0 !important;
+  color: rgb(255, 255, 255);
+  display: flex !important;
+  align-items: center !important;
+  min-height: 33px !important; 
+}
+
+.choices__list--dropdown {
+  border: none;
+  background-color:  rgba(255, 255, 255, 0.9) !important;
+  border-radius: 12px !important;
+  margin-top: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(104, 104, 104, 0.3) transparent;
+}
+
+.choices__list--dropdown .choices__item {
+  color: rgb(71, 71, 71) !important;
+  padding: 7px 10px !important;
+  text-align: left;
+  font-size: 12px !important; 
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+  background-color: rgba(104, 104, 104, 0.3) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.choices__placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-align: left;
+  opacity: 1;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.choices.is-focused .choices__inner {
+  background: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3) !important;
+  border: none !important;
+}
+
+.choices__input {
+  background: transparent !important;
+  color: rgba(71, 71, 71) !important;
+  text-align: left;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.custom_select select {
+  width: 100% !important;
+  padding: 8px 12px !important; 
+  margin: 5px 0 !important; 
+  border: none !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 14px !important;
+  font-family: 'Poppins', sans-serif;
+  outline: none !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15) !important;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  height: auto !important;
+  line-height: normal !important; 
+}
+
+/* FOR PASSWORD STRENGTH INDICATOR */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: rgba(255,255, 255, 0.7);
+}
+
+.password-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  text-align: left;
+  background: #636363d4;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: white;
+  width: 250px;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+
+.password-tooltip p {
+  margin: 5px 0;
+}
+
+.password-tooltip i {
+  width: 16px;
+  margin-right: 6px;
+}
+
+.strength-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+#strengthLevel {
+  height: 100%;
+  width: 0%;
+  border-radius: 6px;
+  background: red;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+
+@media screen and (max-width: 576px) {
+  .choices__inner {
+    padding: 6px 10px;
+    font-size: 12px !important;
+  }
+}
+
+.signup-container button {
+  width: 40%;
+  padding: 8px; 
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  font-size: 14px; 
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.signup-container button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  color: #000;
+}
+
+.signup-container p {
+  font-size: 12px; 
+  margin-top: 8px; 
+  color: white;
+}
+
+.signup-container p a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-container p a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .signup-container {
+    padding: 15px;
+  }
+  
+  .signup-container img {
+    width: 70px;
+    margin-bottom: 5px;
+  }
+  
+  .signup-container button {
+    width: 50%;
+    margin-top: 5px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  header {
+    padding: 8px 10px;
+  }
+  
+  .logo-container {
+    gap: 5px;
+  }
+  
+  .logo-container img {
+    height: 25px;
+  }
+  
+  .back-button {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  
+  .signup-container {
+    padding: 12px;
+    width: 95%;
+  }
+  
+  .signup-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .signup-container input,
+  .custom-select select {
+    padding: 6px 10px;
+    margin: 3px 0;
+    font-size: 12px;
+  }
+  
+  .signup-container button {
+    width: 70%;
+    padding: 6px;
+  }
+  
+  .signup-container p {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .logo-container img {
+    height: 20px;
+  }
+  
+  .back-button {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+  
+  .signup-container {
+    padding: 10px;
+  }
+  
+  .signup-container img {
+    width: 60px;
+    margin-bottom: 5px;
+  }
+  
+  .signup-container button {
+    width: 100%;
+    font-size: 12px;
+    padding: 5px;
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+.env
+appsettings.json
+*.log
+bin/
+obj/
+.vs/

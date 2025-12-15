@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Manila Water</title>
+  <link rel= "icon" href= "img/logo_mnlwater.png" type= "image/png">
+  <link rel="stylesheet" href="css/s_login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+    <a class="back-button" href="index.html">← Back</a>
+  </header>
+
+  <div class="login-container">
+    <img src="img/ic_loginUser2.png" alt="User Icon">
+    <form method="POST" action="php/login_user.php" id="loginForm">
+      <input id="email" name="email" type="text" placeholder="Email" required />
+      <div class="password-wrapper">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+          <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+      </div>
+      <div id="error-message"></div>
+      <button type="submit">Log In</button>
+    </form>
+<!--    <p>Don't have an account? <a href="signup.html">Sign Up</a></p> -->
+  </div>
+
+  <script src="js/js_login.js" defer></script>
+</body>
+</html>

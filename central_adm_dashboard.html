@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manila Water Admin Site</title>
+  <link rel="icon" href="img/logo_mnlwater.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/central_adm_dashboard.css">
+  <link rel="stylesheet" href="css/s_tables.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+    <div class="icon-bar">
+<!--      <img src="img/ic_user.png" alt="User Icon" onclick="goToProfile()" /> -->
+      <button class="logout-button" onclick="showLogoutPopup()">Logout</button>
+    </div>
+    <div id="mobile-menu-toggle" class="mobile-menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+    <div class="mobile-menu-items">
+      <div class="mobile-menu-item" onclick="goToProfile()">
+        <img src="img/ic_user.png" alt="User Icon" />
+        <span>Profile</span>
+      </div>
+      <div class="mobile-menu-item logout" onclick="showLogoutPopup()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <section class="advisory-section">
+      <h2>OFFICIAL WATER INTERRUPTION ADVISORIES</h2>
+      <div class="controls-container">
+        <input type="text" class="search-bar" placeholder="Search advisories...">
+        <button class="add-button">Add New Advisory</button>
+      </div>
+      <div id="advisoryModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <iframe id="advisoryFrame" src="advisory_form.html" title="Advisory Form"></iframe>
+        </div>
+      </div>
+      <div class="table-container">
+        <div class="table-scroll-wrapper">
+          <div class="loading loading-pulse">
+            <div class="loader"></div>
+            <div class="loading-text">Loading advisories...</div>
+          </div>
+          <table id="advisoryTable">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="advisoryTableBody">
+              <!-- Advisories will be loaded here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="monitoring-dashboard" class="monitoring-dashboard">
+      <h2 class="dashboard-title">MONITORING DASHBOARD</h2>
+      <div class="stats-container reports-stats">
+        <div class="stat-card total">
+          <h3>Total Reports</h3>
+          <div id="total" class="stat-number">0</div>
+        </div>
+        <div class="stat-card pending">
+          <h3>Pending</h3>
+          <div id="pending" class="stat-number">0</div>
+        </div>
+        <div class="stat-card verified">
+          <h3>Verified</h3>
+          <div id="verified" class="stat-number">0</div>
+        </div>
+        <div class="stat-card resolved">
+          <h3>Resolved</h3>
+          <div id="resolved" class="stat-number">0</div>
+        </div>
+        <div class="stat-card rejected">
+          <h3>Rejected</h3>
+          <div id="rejected" class="stat-number">0</div>
+        </div>
+      </div>
+      <div class="stats-container advisories-stats" style="display: none;">
+        <div class="stat-card total">
+          <h3>Total Advisories</h3>
+          <div class="stat-number">0</div>
+        </div>
+        <div class="stat-card upcoming">
+          <h3>Upcoming</h3>
+          <div class="stat-number">0</div>
+        </div>
+        <div class="stat-card ongoing">
+          <h3>Ongoing</h3>
+          <div class="stat-number">0</div>
+        </div>
+        <div class="stat-card resolved">
+          <h3>Resolved</h3>
+          <div class="stat-number">0</div>
+        </div>
+      </div>
+      <div class="tabs-container tab-group">
+  <div class="tabs-header">
+    <button class="tab-button active" data-tab="advisories">Water Interruption Advisories</button>
+  </div>
+  
+  <!-- Remove 'active' class here -->
+  <div class="tab-content" id="reports-tab">
+    <div class="table-container">
+      <div class="table-scroll-wrapper">
+        <table class="reports-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TYPE</th>
+              <th>DATE SUBMITTED</th>
+              <th>ADDRESS</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="reports-table-body">
+            <!-- Reports data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Keep 'active' class here -->
+  <div class="tab-content active" id="advisories-tab">
+    <div class="table-container">
+      <div class="table-scroll-wrapper">
+        <table class="reports-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>TYPE</th>
+              <th>LOCATION</th>
+              <th>STATUS</th>
+              <th>SCHEDULE</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="advisories-table-body">
+            <!-- Advisories data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+    </section>
+
+    <!-- ANALYTICS 
+    <section class="analytics-section">
+        <div class="analytics-container"> -->
+            <!-- Header and Tabs Row 
+            <div class="analytics-header-row">
+                <div class="analytics-header">
+                    <h1>Analytics</h1>
+                    <p>Interruption Patterns & Service Overview</p>
+                </div>
+                
+                <div class="analytics-tabs">
+                    <button class="tab-button active" onclick="switchTab(event, 'plan')">Insights</button>
+                    <button class="tab-button" onclick="switchTab(event, 'trends')">Performance</button>
+                   
+                </div>
+            </div> -->
+
+            <!-- Content 
+            <div class="analytics-content"> -->
+                <!-- Plan Tab 
+                <div class="tab-content active" id="insights">
+                          <div class="content-top">
+                            <div class="content-header">
+                              <h2>Service Disruption Patterns & Coverage</h2>
+                              <p>Understand which areas are most frequently affected and what types of advisories occur, along with their typical durations.</p>
+                            </div>
+                            <div class="info-cards">
+                              <div class="info-card avg-duration">
+                                <h3>Most Frequent Advisory Type</h3>
+                                <div id="frequentAdvisory" class="value">Hours</div>
+                              </div>
+                              <div class="info-card most-interrupted">
+                                <h3>Longest Average Duration</h3>
+                                <div id="longestAvgDuration" class="value">Day</div>
+                              </div>
+                              <div class="info-card least-interrupted">
+                                <h3>Most Affected Barangay</h3>
+                                <div id="mostAffectedBrgy" class="value">Day</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="content-body">
+                            <div class="content-left">
+                              <div class="peak-problems-section">
+                                <div class="chart-container">
+                                  <canvas id="advisoryTypeChart"></canvas>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="content-right">
+                              <div class="heatmap-section">
+                                <div class="chart-container" style="height: 260px;">
+                                  <canvas id="affectedAreas"></canvas>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Trends Tab 
+                <div class="tab-content" id="trends">
+                    <div class="content-top">
+                        <div class="content-header">
+                            <h2>Service Planning</h2>
+                            <p>Planned maintenance and scheduled interruptions</p>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <h3>Scheduled</h3>
+                                <div class="value">3</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>This Week</h3>
+                                <div class="value">1</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>Next Week</h3>
+                                <div class="value">2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="peak-problems-section">
+                                <h3>Maintenance Schedule</h3>
+                                <div style="height: 280px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.3); border-radius: 10px; margin-top: 10px;">
+                                    <span style="color: #2d3436; opacity: 0.7;">Calendar view here</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-right">
+                            <div class="graph-placeholder">
+                                Planning timeline visualization
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    </section> -->
+
+
+    <footer class="footer">
+      <div class="footer-overlay"></div>
+      <div class="footer-container">
+        <div class="footer-bottom">
+          <div class="footer-left">
+            <div class="footer-bottom-top">
+              <div class="logos-section">
+                <div class="logos">
+                  <img src="img/logo_sampaloc.png" alt="City logo" />
+                  <img src="img/logo_mw1.png" alt="Manila Water logo" />
+                </div>
+              </div>
+            </div>
+            <div class="footer-bottom-bottom">
+              <div class="copyright-section">
+                &copy; 2025 Manila Water - Sampaloc. All rights reserved.
+              </div>
+            </div>
+          </div>
+          <div class="divider-vertical"></div>
+          <div class="address-section">
+            <p>MWSS Administration Building 489</p>
+            <p>Katipunan Road, Balara Quezon City</p>
+            <p>Philippines 1105</p>
+          </div>
+          <div class="divider-vertical"></div>
+          <div class="contact-section">
+            <div class="contact-info-wrapper">
+              <div class="hotline-social-wrapper">
+                <p class="hotline">Hotline: 1627 | (02) 8403 2410</p>
+                <div class="social-icons">
+                  <a href="https://www.facebook.com/manilawater/" target="_blank">
+                    <img src="img/ic_facebook.png" alt="Facebook" />
+                  </a>
+                  <a href="https://x.com/ManilaWaterPH" target="_blank">
+                    <img src="img/ic_twitter.png" alt="Twitter" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="logout-popup" id="logoutPopup">
+    <div class="logout-popup-content">
+      <h3>Are you sure you want to log out?</h3>
+      <button class="yes-btn" onclick="confirmLogout()">Yes</button>
+      <button class="no-btn" onclick="hideLogoutPopup()">No</button>
+    </div>
+  </div>
+
+  <div id="trendsComingSoon" class="coming-soon-modal" style="display:none;">
+  <div class="coming-soon-content">
+    <div class="coming-soon-icon">
+      <i class="fas fa-tools"></i>
+    </div>
+    <h2>Performance Insights <br>(Coming Soon)</h2>
+    <p></p>We're working on a powerful analytics dashboard to help Central Admins monitor barangay-level performance on complaint handling and verification responsiveness.</p>
+    <blockquote>
+        This feature is under development and will be available in a future update.    </blockquote>
+    <button id="closeComingSoon" class="coming-soon-close">Close</button>
+  </div>
+</div>
+
+  <!-- Add EmailJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="js/public_advisory.js"></script>
+  <script src="js/scriptModal.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/advisory_notifications.js"></script>
+  <script src="js/central_adm_dashboard.js"></script>
+  <script src="js/advisory_management.js"></script>
+</body>
+
+</html>

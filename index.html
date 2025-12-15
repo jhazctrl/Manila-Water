@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manila Water Interruption Advisories</title>
+  <link rel= "icon" href= "img/logo_mnlwater.png" type= "image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/s_index.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+
+    <div class="login-dropdown">
+      <button class="dropbtn" onclick="toggleDropdown()">
+        <img src="img/ic_user.png" alt="" /> Log In
+      </button>
+      <nav id="dropdownMenu" class="dropdown-content">
+        <a href="login.html">Log In</a>
+    <!--    <a href="signup.html">Sign Up</a> -->
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-section">
+      <img src="img/logo_main.png" alt="Manila Water main logo" class="main-logo-centered" />
+    </section>
+
+    <section class="advisory-section">
+      <h2>WATER INTERRUPTION ADVISORIES</h2>
+      <div class="controls-container">
+        <img src="img/ic_search.jpg" alt="Search" />
+        <input type="text" class="search-bar" placeholder="Type in Barangay / Address for report check" />
+      </div>
+
+      <div class="table-container">
+        <div class="table-scroll-wrapper">
+          <div class="loading loading-pulse">
+            <div class="loader"></div>
+            <div class="loading-text">Loading advisories...</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Advisories will be loaded here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+<!--<footer class="footer">
+      <div class="footer-overlay"></div>
+      <div class="footer-container">
+       
+        <div class="footer-top">
+          <div class="email-section">
+            <div class="subscribe">
+              <p>Stay updated with the latest advisories and important notifications for your area.</p>
+              
+              <form id="emailForm" class="subscription-container">
+                <div class="subscription-row">
+                  <input type="email" id="emailInput" name="user_email" placeholder="Enter your Email Address" required />
+                </div>
+                
+                <div class="subscription-row location-row">
+                  <select id="barangayDropdown" name="barangay" required>
+                    <option value="">Select Barangay</option>
+                  </select>
+                </div>
+
+                <div class="subscription-row location-row">
+                  <select id="streetDropdown" name="street" required>
+                    <option value="">Select Street</option>
+                  </select>
+                </div>
+                
+                <div class="subscription-row">
+                  <button type="submit" id="subscribeButton">
+                    Subscribe for Updates
+                    <span class="loader" id="subscribeLoader" style="display: none;"></span>
+                  </button>
+                </div>
+              </form> -->
+              
+              <!-- Status Message -->
+          <!--   <div id="statusMessage" class="status-message" style="display: none;"></div>
+            </div>
+          </div>
+        </div>
+       
+        <div class="footer-bottom">
+          <div class="footer-left">
+            <div class="footer-bottom-top">
+              <div class="logos-section">
+                <div class="logos">
+                  <img src="img/logo_sampaloc.png" alt="City logo" />
+                  <img src="img/logo_mw1.png" alt="Manila Water logo" />
+                </div>
+              </div>
+          </div>
+          <div class="footer-bottom-bottom">
+            <div class="copyright-section">
+              &copy; 2025 Manila Water - Sampaloc. All rights reserved.
+            </div>
+          </div>
+          </div>
+
+         
+          <div class="divider-vertical"></div>
+         
+          <div class="address-section">
+            <p>MWSS Administration Building 489</p>
+            <p>Katipunan Road, Balara Quezon City</p>
+            <p>Philippines 1105</p>
+          </div>
+         
+          <div class="divider-vertical"></div>
+         
+          <div class="contact-section">
+            <div class="contact-info-wrapper">
+              <div class="hotline-social-wrapper">
+                <p class="hotline">Hotline: 1627 | (02) 8403 2410</p>
+                <div class="social-icons">
+                  <a href="https://www.facebook.com/manilawater/" target="_blank">
+                    <img src="img/ic_facebook.png" alt="Facebook" />
+                  </a>
+                  <a href="https://x.com/ManilaWaterPH" target="_blank">
+                    <img src="img/ic_twitter.png" alt="Twitter" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer> -->
+  </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>  
+  <script src="js/js_subscribe_email.js"></script>
+  <script src="js/js_subscribe_email.js"></script>
+  <script src="js/js_index.js"></script>
+</body>
+</html>

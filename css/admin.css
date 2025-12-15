@@ -1,0 +1,147 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.header-container {
+    text-align: center;
+    padding: 40px 20px 20px;
+    background-color: transparent; 
+}
+
+h1 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-container input {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+h2 {
+    color: #fff;
+    margin-top: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.section {
+    background-color: transparent;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+}
+
+table {
+    width: 80%;
+    margin: 15px auto;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    height: 35px;
+}
+
+td {
+    padding: 10px 12px;
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+}
+
+tr:nth-child(even) td {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+tr:hover td {
+    background-color: #eaeaea;
+}
+
+.status-upcoming {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.status-resolved {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+footer {
+    margin-top: auto;
+    padding: 16px 20px; /* Increased vertical padding */
+    background-color: #fff;
+    border-top: none;
+    font-family: Arial, sans-serif;
+}
+
+.footer-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 6px;
+}
+
+.social-circle {
+    background: #333;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.icon-img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.hotline-text {
+    text-align: right;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #000; /* Changed to black */
+}
+
+.hotline-text strong {
+    font-weight: bold;
+    color: #000; /* Ensures "Hotline:" is also black */
+}
+
+

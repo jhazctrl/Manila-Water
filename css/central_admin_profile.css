@@ -1,0 +1,633 @@
+* {
+      box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background: url('../img/bg_profile.jpg') center / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    z-index: 999;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-container img {
+    height: 40px;
+}
+
+.back-button {
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+
+.page-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.card {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 40px;
+    width: 70vw;
+    height: 80vh;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin-right: 20px;
+}
+
+.profile-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name h2 {
+    margin: 0;
+    font-size: 50px;
+    font-weight: 1000;
+    color: #ffffff;
+}
+
+.profile-name p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.profile-name span {
+    color: #3e503f;
+    opacity: 0.8;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 2px;
+    font-weight: 600;
+    color: white;
+    font-size: 12px;
+    padding-left: px;
+    font-weight: 10;
+}
+
+input {
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 14px;
+    outline: none;
+    backdrop-filter: blur(10px);
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+button {
+    align-self: flex-end;
+    padding: 10px 35px;
+    background: #2c402e;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #4a6750;
+}
+
+/* UPDATE MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-header {
+    text-align: center;
+    color: #2c402e;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.modal-card {
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    border-radius: 20px;
+    padding: 40px 20px;
+    color: #000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-card .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.modal-profile {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.modal-profile-container {
+  position: relative;
+  width: 130px;
+  height: 130px;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.modal-profile-container:hover .upload-overlay {
+  opacity: 1;
+}
+
+.modal-card form {
+    width: 100%;
+    max-width: 656px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.modal-card .row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.modal-card input,
+.modal-card select {
+    flex: 1;
+    min-width: 250px;
+    max-width: 100%;
+    height: 48px;
+    padding: 12px 16px;
+    border-radius: 25px;
+    border: none;
+    background: #f0f0f0;
+    font-size: 14px;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.modal-card select::placeholder {
+     color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-card input.full-width {
+    width: 100%;
+    height: 48px;
+    padding: 12px 16px;
+}
+
+.modal-card select {
+    appearance: none;
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml,%3Csvg fill='black' viewBox='0 0 24 24' width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.modal-card input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-card::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-card::-webkit-scrollbar-thumb {
+    background-color: rgba(51, 51, 51, 0.75);  
+    border-radius: 100px;
+}
+
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input.full-width {
+    padding-right: 50px;
+}
+
+.edit-badge {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* Password Modal Styles */
+.password-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.password-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.password-form-card {
+    width: 100%;
+    background: #f9f9f9;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+.password-form-header {
+    width: 100%;
+    background: #556158;
+    padding: 20px 0;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 20px 20px 0 0;
+}
+
+.password-form {
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.password-form label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.password-form input {
+    padding: 14px 20px;
+    margin-bottom: 18px;
+    border-radius: 25px;
+    border: none;
+    background: #d7dad7;
+    font-size: 14px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.password-form button {
+    align-self: flex-end;
+    padding: 8px 20px;
+    background: #2c402e;
+    color: white;
+    border: none;
+    border-radius: 20px; 
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.password-form button:hover {
+    background: #3c5942;
+}
+
+.password-modal .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 26px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-modal .close-button:hover {
+    color: #ddd;
+    transform: scale(1.1);
+}
+
+.password-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 30px 30px 20px;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.password-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c402e;
+    margin-bottom: 10px;
+}
+
+.password-message {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.password-input-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.password-label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.password-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    color: #333;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.password-button {
+    padding: 10px 30px;
+    background: #2c402e;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.password-button:hover {
+    background: #3c5942;
+}
+
+.updated-card {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px 20px 16px;
+}
+
+.updated-card .password-title {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.updated-card .password-message {
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-card {
+        padding: 30px 15px;
+    }
+    
+    .modal-card .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-card input,
+    .modal-card select,
+    .modal-card input.full-width {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .button-container {
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .password-form {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-card {
+        padding: 20px 10px;
+    }
+    
+    .modal-profile-container img.profile-img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .modal-header {
+        font-size: 20px;
+    }
+    
+    .password-form-header {
+        font-size: 18px;
+        padding: 15px 0;
+    }
+    
+    .password-card {
+        padding: 20px 15px;
+    }
+}
+
+/* -- DROPDOWN -- */
