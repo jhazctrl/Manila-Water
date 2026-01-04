@@ -1,0 +1,22 @@
+[
+  {
+    "complaint_duration_id": 1,
+    "complaint_duration": "Just today"
+  },
+  {
+    "complaint_duration_id": 2,
+    "complaint_duration": "Few days"
+  },
+  {
+    "complaint_duration_id": 3,
+    "complaint_duration": "About a week"
+  },
+  {
+    "complaint_duration_id": 4,
+    "complaint_duration": "More than a month"
+  },
+  {
+    "complaint_duration_id": 5,
+    "complaint_duration": "Recurring issue"
+  }
+]

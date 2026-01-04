@@ -1,0 +1,22 @@
+[
+  {
+    "complaint_type_id": 1,
+    "complaint_type": "No water supply"
+  },
+  {
+    "complaint_type_id": 2,
+    "complaint_type": "Low water pressure"
+  },
+  {
+    "complaint_type_id": 3,
+    "complaint_type": "Water leakage"
+  },
+  {
+    "complaint_type_id": 4,
+    "complaint_type": "Water quality issue"
+  },
+  {
+    "complaint_type_id": 5,
+    "complaint_type": "others"
+  }
+]

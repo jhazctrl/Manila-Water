@@ -1,0 +1,774 @@
+[
+  {
+    "brgy_id": 1,
+    "brgy_number": "BRGY-395"
+  },
+  {
+    "brgy_id": 2,
+    "brgy_number": "BRGY-396"
+  },
+  {
+    "brgy_id": 3,
+    "brgy_number": "BRGY-397"
+  },
+  {
+    "brgy_id": 4,
+    "brgy_number": "BRGY-398"
+  },
+  {
+    "brgy_id": 5,
+    "brgy_number": "BRGY-399"
+  },
+  {
+    "brgy_id": 6,
+    "brgy_number": "BRGY-400"
+  },
+  {
+    "brgy_id": 7,
+    "brgy_number": "BRGY-401"
+  },
+  {
+    "brgy_id": 8,
+    "brgy_number": "BRGY-402"
+  },
+  {
+    "brgy_id": 9,
+    "brgy_number": "BRGY-403"
+  },
+  {
+    "brgy_id": 10,
+    "brgy_number": "BRGY-404"
+  },
+  {
+    "brgy_id": 11,
+    "brgy_number": "BRGY-405"
+  },
+  {
+    "brgy_id": 12,
+    "brgy_number": "BRGY-406"
+  },
+  {
+    "brgy_id": 13,
+    "brgy_number": "BRGY-407"
+  },
+  {
+    "brgy_id": 14,
+    "brgy_number": "BRGY-408"
+  },
+  {
+    "brgy_id": 15,
+    "brgy_number": "BRGY-409"
+  },
+  {
+    "brgy_id": 16,
+    "brgy_number": "BRGY-410"
+  },
+  {
+    "brgy_id": 17,
+    "brgy_number": "BRGY-411"
+  },
+  {
+    "brgy_id": 18,
+    "brgy_number": "BRGY-412"
+  },
+  {
+    "brgy_id": 19,
+    "brgy_number": "BRGY-413"
+  },
+  {
+    "brgy_id": 20,
+    "brgy_number": "BRGY-414"
+  },
+  {
+    "brgy_id": 21,
+    "brgy_number": "BRGY-415"
+  },
+  {
+    "brgy_id": 22,
+    "brgy_number": "BRGY-416"
+  },
+  {
+    "brgy_id": 23,
+    "brgy_number": "BRGY-417"
+  },
+  {
+    "brgy_id": 24,
+    "brgy_number": "BRGY-418"
+  },
+  {
+    "brgy_id": 25,
+    "brgy_number": "BRGY-419"
+  },
+  {
+    "brgy_id": 26,
+    "brgy_number": "BRGY-420"
+  },
+  {
+    "brgy_id": 27,
+    "brgy_number": "BRGY-421"
+  },
+  {
+    "brgy_id": 28,
+    "brgy_number": "BRGY-422"
+  },
+  {
+    "brgy_id": 29,
+    "brgy_number": "BRGY-423"
+  },
+  {
+    "brgy_id": 30,
+    "brgy_number": "BRGY-424"
+  },
+  {
+    "brgy_id": 31,
+    "brgy_number": "BRGY-425"
+  },
+  {
+    "brgy_id": 32,
+    "brgy_number": "BRGY-426"
+  },
+  {
+    "brgy_id": 33,
+    "brgy_number": "BRGY-427"
+  },
+  {
+    "brgy_id": 34,
+    "brgy_number": "BRGY-428"
+  },
+  {
+    "brgy_id": 35,
+    "brgy_number": "BRGY-429"
+  },
+  {
+    "brgy_id": 36,
+    "brgy_number": "BRGY-430"
+  },
+  {
+    "brgy_id": 37,
+    "brgy_number": "BRGY-431"
+  },
+  {
+    "brgy_id": 38,
+    "brgy_number": "BRGY-432"
+  },
+  {
+    "brgy_id": 39,
+    "brgy_number": "BRGY-433"
+  },
+  {
+    "brgy_id": 40,
+    "brgy_number": "BRGY-434"
+  },
+  {
+    "brgy_id": 41,
+    "brgy_number": "BRGY-435"
+  },
+  {
+    "brgy_id": 42,
+    "brgy_number": "BRGY-436"
+  },
+  {
+    "brgy_id": 43,
+    "brgy_number": "BRGY-437"
+  },
+  {
+    "brgy_id": 44,
+    "brgy_number": "BRGY-438"
+  },
+  {
+    "brgy_id": 45,
+    "brgy_number": "BRGY-439"
+  },
+  {
+    "brgy_id": 46,
+    "brgy_number": "BRGY-440"
+  },
+  {
+    "brgy_id": 47,
+    "brgy_number": "BRGY-441"
+  },
+  {
+    "brgy_id": 48,
+    "brgy_number": "BRGY-442"
+  },
+  {
+    "brgy_id": 49,
+    "brgy_number": "BRGY-443"
+  },
+  {
+    "brgy_id": 50,
+    "brgy_number": "BRGY-444"
+  },
+  {
+    "brgy_id": 51,
+    "brgy_number": "BRGY-445"
+  },
+  {
+    "brgy_id": 52,
+    "brgy_number": "BRGY-446"
+  },
+  {
+    "brgy_id": 53,
+    "brgy_number": "BRGY-447"
+  },
+  {
+    "brgy_id": 54,
+    "brgy_number": "BRGY-448"
+  },
+  {
+    "brgy_id": 55,
+    "brgy_number": "BRGY-449"
+  },
+  {
+    "brgy_id": 56,
+    "brgy_number": "BRGY-450"
+  },
+  {
+    "brgy_id": 57,
+    "brgy_number": "BRGY-451"
+  },
+  {
+    "brgy_id": 58,
+    "brgy_number": "BRGY-452"
+  },
+  {
+    "brgy_id": 59,
+    "brgy_number": "BRGY-453"
+  },
+  {
+    "brgy_id": 60,
+    "brgy_number": "BRGY-454"
+  },
+  {
+    "brgy_id": 61,
+    "brgy_number": "BRGY-455"
+  },
+  {
+    "brgy_id": 62,
+    "brgy_number": "BRGY-456"
+  },
+  {
+    "brgy_id": 63,
+    "brgy_number": "BRGY-457"
+  },
+  {
+    "brgy_id": 64,
+    "brgy_number": "BRGY-458"
+  },
+  {
+    "brgy_id": 65,
+    "brgy_number": "BRGY-459"
+  },
+  {
+    "brgy_id": 66,
+    "brgy_number": "BRGY-460"
+  },
+  {
+    "brgy_id": 67,
+    "brgy_number": "BRGY-461"
+  },
+  {
+    "brgy_id": 68,
+    "brgy_number": "BRGY-462"
+  },
+  {
+    "brgy_id": 69,
+    "brgy_number": "BRGY-463"
+  },
+  {
+    "brgy_id": 70,
+    "brgy_number": "BRGY-464"
+  },
+  {
+    "brgy_id": 71,
+    "brgy_number": "BRGY-465"
+  },
+  {
+    "brgy_id": 72,
+    "brgy_number": "BRGY-466"
+  },
+  {
+    "brgy_id": 73,
+    "brgy_number": "BRGY-467"
+  },
+  {
+    "brgy_id": 74,
+    "brgy_number": "BRGY-468"
+  },
+  {
+    "brgy_id": 75,
+    "brgy_number": "BRGY-469"
+  },
+  {
+    "brgy_id": 76,
+    "brgy_number": "BRGY-470"
+  },
+  {
+    "brgy_id": 77,
+    "brgy_number": "BRGY-471"
+  },
+  {
+    "brgy_id": 78,
+    "brgy_number": "BRGY-472"
+  },
+  {
+    "brgy_id": 79,
+    "brgy_number": "BRGY-473"
+  },
+  {
+    "brgy_id": 80,
+    "brgy_number": "BRGY-474"
+  },
+  {
+    "brgy_id": 81,
+    "brgy_number": "BRGY-475"
+  },
+  {
+    "brgy_id": 82,
+    "brgy_number": "BRGY-476"
+  },
+  {
+    "brgy_id": 83,
+    "brgy_number": "BRGY-477"
+  },
+  {
+    "brgy_id": 84,
+    "brgy_number": "BRGY-478"
+  },
+  {
+    "brgy_id": 85,
+    "brgy_number": "BRGY-479"
+  },
+  {
+    "brgy_id": 86,
+    "brgy_number": "BRGY-480"
+  },
+  {
+    "brgy_id": 87,
+    "brgy_number": "BRGY-481"
+  },
+  {
+    "brgy_id": 88,
+    "brgy_number": "BRGY-482"
+  },
+  {
+    "brgy_id": 89,
+    "brgy_number": "BRGY-483"
+  },
+  {
+    "brgy_id": 90,
+    "brgy_number": "BRGY-484"
+  },
+  {
+    "brgy_id": 91,
+    "brgy_number": "BRGY-485"
+  },
+  {
+    "brgy_id": 92,
+    "brgy_number": "BRGY-486"
+  },
+  {
+    "brgy_id": 93,
+    "brgy_number": "BRGY-487"
+  },
+  {
+    "brgy_id": 94,
+    "brgy_number": "BRGY-488"
+  },
+  {
+    "brgy_id": 95,
+    "brgy_number": "BRGY-489"
+  },
+  {
+    "brgy_id": 96,
+    "brgy_number": "BRGY-490"
+  },
+  {
+    "brgy_id": 97,
+    "brgy_number": "BRGY-491"
+  },
+  {
+    "brgy_id": 98,
+    "brgy_number": "BRGY-492"
+  },
+  {
+    "brgy_id": 99,
+    "brgy_number": "BRGY-493"
+  },
+  {
+    "brgy_id": 100,
+    "brgy_number": "BRGY-494"
+  },
+  {
+    "brgy_id": 101,
+    "brgy_number": "BRGY-495"
+  },
+  {
+    "brgy_id": 102,
+    "brgy_number": "BRGY-496"
+  },
+  {
+    "brgy_id": 103,
+    "brgy_number": "BRGY-497"
+  },
+  {
+    "brgy_id": 104,
+    "brgy_number": "BRGY-498"
+  },
+  {
+    "brgy_id": 105,
+    "brgy_number": "BRGY-499"
+  },
+  {
+    "brgy_id": 106,
+    "brgy_number": "BRGY-500"
+  },
+  {
+    "brgy_id": 107,
+    "brgy_number": "BRGY-501"
+  },
+  {
+    "brgy_id": 108,
+    "brgy_number": "BRGY-502"
+  },
+  {
+    "brgy_id": 109,
+    "brgy_number": "BRGY-503"
+  },
+  {
+    "brgy_id": 110,
+    "brgy_number": "BRGY-504"
+  },
+  {
+    "brgy_id": 111,
+    "brgy_number": "BRGY-505"
+  },
+  {
+    "brgy_id": 112,
+    "brgy_number": "BRGY-506"
+  },
+  {
+    "brgy_id": 113,
+    "brgy_number": "BRGY-507"
+  },
+  {
+    "brgy_id": 114,
+    "brgy_number": "BRGY-508"
+  },
+  {
+    "brgy_id": 115,
+    "brgy_number": "BRGY-509"
+  },
+  {
+    "brgy_id": 116,
+    "brgy_number": "BRGY-510"
+  },
+  {
+    "brgy_id": 117,
+    "brgy_number": "BRGY-511"
+  },
+  {
+    "brgy_id": 118,
+    "brgy_number": "BRGY-512"
+  },
+  {
+    "brgy_id": 119,
+    "brgy_number": "BRGY-513"
+  },
+  {
+    "brgy_id": 120,
+    "brgy_number": "BRGY-514"
+  },
+  {
+    "brgy_id": 121,
+    "brgy_number": "BRGY-515"
+  },
+  {
+    "brgy_id": 122,
+    "brgy_number": "BRGY-516"
+  },
+  {
+    "brgy_id": 123,
+    "brgy_number": "BRGY-517"
+  },
+  {
+    "brgy_id": 124,
+    "brgy_number": "BRGY-518"
+  },
+  {
+    "brgy_id": 125,
+    "brgy_number": "BRGY-519"
+  },
+  {
+    "brgy_id": 126,
+    "brgy_number": "BRGY-520"
+  },
+  {
+    "brgy_id": 127,
+    "brgy_number": "BRGY-521"
+  },
+  {
+    "brgy_id": 128,
+    "brgy_number": "BRGY-522"
+  },
+  {
+    "brgy_id": 129,
+    "brgy_number": "BRGY-523"
+  },
+  {
+    "brgy_id": 130,
+    "brgy_number": "BRGY-524"
+  },
+  {
+    "brgy_id": 131,
+    "brgy_number": "BRGY-525"
+  },
+  {
+    "brgy_id": 132,
+    "brgy_number": "BRGY-526"
+  },
+  {
+    "brgy_id": 133,
+    "brgy_number": "BRGY-527"
+  },
+  {
+    "brgy_id": 134,
+    "brgy_number": "BRGY-528"
+  },
+  {
+    "brgy_id": 135,
+    "brgy_number": "BRGY-529"
+  },
+  {
+    "brgy_id": 136,
+    "brgy_number": "BRGY-530"
+  },
+  {
+    "brgy_id": 137,
+    "brgy_number": "BRGY-531"
+  },
+  {
+    "brgy_id": 138,
+    "brgy_number": "BRGY-532"
+  },
+  {
+    "brgy_id": 139,
+    "brgy_number": "BRGY-533"
+  },
+  {
+    "brgy_id": 140,
+    "brgy_number": "BRGY-534"
+  },
+  {
+    "brgy_id": 141,
+    "brgy_number": "BRGY-535"
+  },
+  {
+    "brgy_id": 142,
+    "brgy_number": "BRGY-536"
+  },
+  {
+    "brgy_id": 143,
+    "brgy_number": "BRGY-537"
+  },
+  {
+    "brgy_id": 144,
+    "brgy_number": "BRGY-538"
+  },
+  {
+    "brgy_id": 145,
+    "brgy_number": "BRGY-539"
+  },
+  {
+    "brgy_id": 146,
+    "brgy_number": "BRGY-540"
+  },
+  {
+    "brgy_id": 147,
+    "brgy_number": "BRGY-541"
+  },
+  {
+    "brgy_id": 148,
+    "brgy_number": "BRGY-542"
+  },
+  {
+    "brgy_id": 149,
+    "brgy_number": "BRGY-543"
+  },
+  {
+    "brgy_id": 150,
+    "brgy_number": "BRGY-544"
+  },
+  {
+    "brgy_id": 151,
+    "brgy_number": "BRGY-545"
+  },
+  {
+    "brgy_id": 152,
+    "brgy_number": "BRGY-546"
+  },
+  {
+    "brgy_id": 153,
+    "brgy_number": "BRGY-547"
+  },
+  {
+    "brgy_id": 154,
+    "brgy_number": "BRGY-548"
+  },
+  {
+    "brgy_id": 155,
+    "brgy_number": "BRGY-549"
+  },
+  {
+    "brgy_id": 156,
+    "brgy_number": "BRGY-550"
+  },
+  {
+    "brgy_id": 157,
+    "brgy_number": "BRGY-551"
+  },
+  {
+    "brgy_id": 158,
+    "brgy_number": "BRGY-552"
+  },
+  {
+    "brgy_id": 159,
+    "brgy_number": "BRGY-553"
+  },
+  {
+    "brgy_id": 160,
+    "brgy_number": "BRGY-554"
+  },
+  {
+    "brgy_id": 161,
+    "brgy_number": "BRGY-555"
+  },
+  {
+    "brgy_id": 162,
+    "brgy_number": "BRGY-556"
+  },
+  {
+    "brgy_id": 163,
+    "brgy_number": "BRGY-557"
+  },
+  {
+    "brgy_id": 164,
+    "brgy_number": "BRGY-558"
+  },
+  {
+    "brgy_id": 165,
+    "brgy_number": "BRGY-559"
+  },
+  {
+    "brgy_id": 166,
+    "brgy_number": "BRGY-560"
+  },
+  {
+    "brgy_id": 167,
+    "brgy_number": "BRGY-561"
+  },
+  {
+    "brgy_id": 168,
+    "brgy_number": "BRGY-562"
+  },
+  {
+    "brgy_id": 169,
+    "brgy_number": "BRGY-563"
+  },
+  {
+    "brgy_id": 170,
+    "brgy_number": "BRGY-564"
+  },
+  {
+    "brgy_id": 171,
+    "brgy_number": "BRGY-565"
+  },
+  {
+    "brgy_id": 172,
+    "brgy_number": "BRGY-566"
+  },
+  {
+    "brgy_id": 173,
+    "brgy_number": "BRGY-567"
+  },
+  {
+    "brgy_id": 174,
+    "brgy_number": "BRGY-568"
+  },
+  {
+    "brgy_id": 175,
+    "brgy_number": "BRGY-569"
+  },
+  {
+    "brgy_id": 176,
+    "brgy_number": "BRGY-570"
+  },
+  {
+    "brgy_id": 177,
+    "brgy_number": "BRGY-571"
+  },
+  {
+    "brgy_id": 178,
+    "brgy_number": "BRGY-572"
+  },
+  {
+    "brgy_id": 179,
+    "brgy_number": "BRGY-573"
+  },
+  {
+    "brgy_id": 180,
+    "brgy_number": "BRGY-574"
+  },
+  {
+    "brgy_id": 181,
+    "brgy_number": "BRGY-575"
+  },
+  {
+    "brgy_id": 182,
+    "brgy_number": "BRGY-576"
+  },
+  {
+    "brgy_id": 183,
+    "brgy_number": "BRGY-577"
+  },
+  {
+    "brgy_id": 184,
+    "brgy_number": "BRGY-578"
+  },
+  {
+    "brgy_id": 185,
+    "brgy_number": "BRGY-579"
+  },
+  {
+    "brgy_id": 186,
+    "brgy_number": "BRGY-580"
+  },
+  {
+    "brgy_id": 187,
+    "brgy_number": "BRGY-581"
+  },
+  {
+    "brgy_id": 188,
+    "brgy_number": "BRGY-582"
+  },
+  {
+    "brgy_id": 189,
+    "brgy_number": "BRGY-583"
+  },
+  {
+    "brgy_id": 190,
+    "brgy_number": "BRGY-584"
+  },
+  {
+    "brgy_id": 191,
+    "brgy_number": "BRGY-585"
+  },
+  {
+    "brgy_id": 192,
+    "brgy_number": "BRGY-586"
+  },
+  {
+    "brgy_id": 200,
+    "brgy_number": "BRGY-587"
+  }
+]

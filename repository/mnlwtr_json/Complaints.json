@@ -1,0 +1,30 @@
+[
+  {
+    "complaint_id": "MWC-2025-12-00001",
+    "complaint_description": "",
+    "complaint_type": 4,
+    "complaint_duration": 1,
+    "status": "Rejected",
+    "complaint_date": "2025-12-24T23:33:45",
+    "address_detail": "5283,St.Gastambide",
+    "street_id": 26,
+    "barangay_id": 5,
+    "contact_no": 639993594834,
+    "submitted_by": 3,
+    "supporting_img": "complaint_694c6a49798be_complaint_683a4c5f3b136_complaint.jpg"
+  },
+  {
+    "complaint_id": "MWC-2026-01-00001",
+    "complaint_description": "",
+    "complaint_type": 4,
+    "complaint_duration": 1,
+    "status": "Resolved",
+    "complaint_date": "2026-01-01T19:33:43",
+    "address_detail": "5283,St.Gastambide",
+    "street_id": 26,
+    "barangay_id": 5,
+    "contact_no": 639993594834,
+    "submitted_by": 4,
+    "supporting_img": "complaint_6956be07ae042_complaint_683a4c5f3b136_complaint.jpg"
+  }
+]

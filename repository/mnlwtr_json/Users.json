@@ -1,0 +1,40 @@
+[
+  {
+    "user_id": 3,
+    "role_id": 3,
+    "first_name": "Main",
+    "last_name": "Admin",
+    "address": "Quezon City, Metro Manila",
+    "street_id": 61,
+    "barangay_id": 11,
+    "user_email": "mwsampaloc@gmail.com",
+    "contact_no": 9875436000,
+    "password": "$2y$10$zjHbihMsw7cOytocsL2vuO4R9SGO6st4x7WFLY4VI7Dk/bsofWb1G",
+    "created_at": "2025-12-25T06:22:07.690"
+  },
+  {
+    "user_id": 4,
+    "role_id": 1,
+    "first_name": "Jasmine",
+    "last_name": "Demapitan",
+    "address": "5283, St. Gastambide",
+    "street_id": 26,
+    "barangay_id": 5,
+    "user_email": "jasminedemapitan@gmail.com",
+    "password": "$2y$10$yTPtQQ8t/8nP/WdBZ39myev97QnAggZdYyOOmgWXHpuoRyvzUMLUS",
+    "created_at": "2025-12-25T06:27:54.590"
+  },
+  {
+    "user_id": 5,
+    "role_id": 2,
+    "first_name": "Luke",
+    "last_name": "Monte",
+    "address": "9203, St. S.H Loyola St.",
+    "street_id": 28,
+    "barangay_id": 5,
+    "user_email": "monteluke@gmail.com",
+    "contact_no": 9125436058,
+    "password": "$2y$10$zAfgrj.wiwLvnnZ4DigQx.6U8d3rtJR99F91sRx3Cz588xjcm8yqm",
+    "created_at": "2025-12-25T06:39:56.460"
+  }
+]

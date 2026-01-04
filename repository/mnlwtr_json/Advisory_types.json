@@ -1,0 +1,22 @@
+[
+  {
+    "advisory_type_id": 1002,
+    "advisory_type": "Scheduled Maintenance"
+  },
+  {
+    "advisory_type_id": 1003,
+    "advisory_type": "Service Interruption"
+  },
+  {
+    "advisory_type_id": 1004,
+    "advisory_type": "Emergency Notice"
+  },
+  {
+    "advisory_type_id": 1005,
+    "advisory_type": "Water Quality"
+  },
+  {
+    "advisory_type_id": 1006,
+    "advisory_type": "Service Restoration"
+  }
+]

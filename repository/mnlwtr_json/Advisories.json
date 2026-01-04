@@ -1,0 +1,28 @@
+[
+  {
+    "advisory_id": 1,
+    "advisory_type_id": 1005,
+    "advisory_description": "This advisory is issued to inform customers of scheduled maintenance activities that may temporarily affect water quality. During this period, you may notice changes in water appearance, taste, or pressure. ",
+    "start_date": "2025-12-26",
+    "start_time": "06:00:00",
+    "end_date": "2025-12-26",
+    "end_time": "14:00:00",
+    "status": "Resolved",
+    "street_id": 26,
+    "brgy_id": 5,
+    "created_at": "2025-12-25T06:32:15.630"
+  },
+  {
+    "advisory_id": 2,
+    "advisory_type_id": 1005,
+    "advisory_description": "This advisory is issued to inform customers of scheduled maintenance activities that may temporarily affect water quality. During this period, you may notice changes in water appearance, taste, or pressure.",
+    "start_date": "2026-01-03",
+    "start_time": "07:00:00",
+    "end_date": "2026-01-03",
+    "end_time": "15:00:00",
+    "status": "upcoming",
+    "street_id": 26,
+    "brgy_id": 5,
+    "created_at": "2026-01-02T03:17:21.150"
+  }
+]
