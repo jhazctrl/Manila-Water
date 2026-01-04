@@ -280,24 +280,298 @@ h1 {
 }
 
 .complaint-modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
 }
 
 .complaint-modal {
-    background: #fff;
-    padding: 2em 2.5em;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    max-width: 420px;
-    width: 100%;
-    position: relative;
-    animation: modalPop .2s;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn 0.3s ease-out;
+  padding: 0; /* Reset padding */
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Modal Header */
+.complaint-modal-header {
+  background: #f8f9fa;
+  color: #2c3e50;
+  padding: 20px 24px;
+  border-radius: 12px 12px 0 0;
+  position: relative;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.complaint-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: #2c3e50;
+}
+
+.complaint-modal-id {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Close button */
+.complaint-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: #e9ecef;
+  border: none;
+  color: #495057;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.complaint-modal-close:hover {
+  background: #dee2e6;
+  color: #212529;
+}
+
+/* Modal Body - Fixed padding */
+.complaint-modal-body {
+  padding: 30px;
+}
+
+.complaint-info-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.complaint-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.complaint-info-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #495057;
+  font-family: 'Poppins', sans-serif;
+}
+
+.complaint-info-value {
+  font-size: 15px;
+  color: #212529;
+  font-weight: 400;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* Status badge in modal */
+.complaint-info-item .status-badge {
+  width: fit-content;
+  margin-top: 2px;
+}
+
+/* Description section */
+.complaint-description {
+  background: #f8f9fa;
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 3px solid #6c757d;
+}
+
+.complaint-description-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 6px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.complaint-description-text {
+  font-size: 14px;
+  color: #212529;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Image section */
+.complaint-image-section {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.complaint-image-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+  display: block;
+  font-family: 'Poppins', sans-serif;
+}
+
+.complaint-image-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.complaint-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+/* Divider */
+.complaint-divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 18px 0;
+}
+
+/* Modal Footer - Action buttons container */
+.complaint-modal-footer {
+  padding: 20px 30px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Modal Action Buttons - Matching the Resolve button style */
+.complaint-action-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+/* Primary action button (Verify, Resolve, etc.) */
+.complaint-action-btn.primary {
+  background: #77dd77;  /* ← Same light green! */
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.complaint-action-btn.primary:hover {
+  background: #66cc66;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(119, 221, 119, 0.4);
+}
+
+/* Secondary action button (Close) */
+.complaint-action-btn.secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.complaint-action-btn.secondary:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Reject button styling */
+.complaint-action-btn.reject {
+  background: #d9534f;
+  color: white;
+}
+
+.complaint-action-btn.reject:hover {
+  background: #c9302c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(217, 83, 79, 0.3);
+}
+
+/* Responsive design for modal */
+@media (max-width: 768px) {
+  .complaint-modal {
+    max-width: 100%;
+    margin: 0 10px;
+    max-height: 95vh;
+  }
+
+  .complaint-modal-header {
+    padding: 16px 20px;
+  }
+
+  .complaint-modal-header h2 {
+    font-size: 16px;
+    padding-right: 35px;
+  }
+
+  .complaint-modal-body {
+    padding: 20px;
+  }
+
+  .complaint-info-grid {
+    gap: 14px;
+  }
+}
+
+/* Scrollbar styling for modal */
+.complaint-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.complaint-modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.complaint-modal::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.complaint-modal::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .modal-content {
@@ -981,14 +1255,25 @@ iframe {
 }
 
 .resolve-btn {
-  background-color: #27ae60;
+  background-color: #77dd77;  /* ← Light green! */
   color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+  min-width: 100px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .resolve-btn:hover {
-  background-color: #219a52;
+  background-color: #66cc66;  /* ← Slightly darker on hover */
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(119, 221, 119, 0.4);
 }
 
 .resolve-btn.resolved {
@@ -999,18 +1284,25 @@ iframe {
 }
 
 .complaints-view-btn {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 6px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    box-shadow: 0 2px 6px rgba(52,152,219,0.08);
+  background-color: #77dd77;  /* ← Light green! */
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+  min-width: 80px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
+
 .complaints-view-btn:hover {
-    background-color: #156092;
+  background-color: #66cc66;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(119, 221, 119, 0.4);
 }
 
 /* Responsive Styles */

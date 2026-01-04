@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manila Water Admin Site</title>
+  <link rel= "icon" href= "img/logo_mnlwater.png" type= "image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <link rel="stylesheet" href="css/brgy_adm_dashboard.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="img/logo_sampaloc.png" alt="City logo" />
+      <img src="img/logo_mw1.png" alt="Manila Water logo" />
+    </div>
+    <div class="icon-bar">
+  <!--    <img src="img/ic_user.png" alt="User Icon" onclick="goToProfile()" /> -->
+      <button class="logout-button" onclick="showLogoutPopup()">Logout</button>
+    </div>
+    <div id="mobile-menu-toggle" class="mobile-menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+  <div class="mobile-menu-items">
+    <div class="mobile-menu-item" onclick="goToProfile()">
+      <img src="img/ic_user.png" alt="User Icon" />
+      <span>Profile</span>
+    </div>
+    <div class="mobile-menu-item logout" onclick="showLogoutPopup()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADVISORY SECTION -->
+  <div class="container">
+    <section class="advisory-section">
+      <h2>WATER INTERRUPTION ADVISORIES</h2>
+      <div class="controls-container">
+        <img src="img/ic_search.jpg" alt="Search" />
+        <input type="text" class="search-bar" placeholder="Search advisories..." />
+      </div>
+
+      <div class="table-container">
+        <div class="table-scroll-wrapper">
+          <div class="loading loading-pulse">
+            <div class="loader"></div>
+            <div class="loading-text">Loading advisories...</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Location</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Advisories will be loaded here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTS SECTION -->
+    <section class="reports-section">
+      <div class="complaints-header">
+        <div class="complaints-title-group">
+          <h1 class="complaints-title">Complaints</h1>
+          <p class="complaints-subtitle">View and manage all complaints submitted by your area.</p>
+        </div>
+        <div class="complaints-controls">
+          <div class="report-search">
+              <img src="img/ic_search.jpg" alt="Search Icon" />
+              <input type="text" placeholder="Search complaints..." />
+            </div>
+          <div class="complaints-filters">
+            <button id="allComplaints" class="filter-btn">Completed complaints</button>
+              <button id="pendings" class="filter-btn">Pending complaints</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-box-wrapper">
+  <!-- Complaints Overview Section -->
+  <div class="report-summary">
+    <div class="summary-header">
+      <h2>Complaints Overview</h2>
+      <div class="sort-wrapper">
+        <i class="fas fa-filter sort-icon" id="sortToggleAnalytics" title="Sort Analytics by time"></i>
+        <div class="sort-dropdown" id="sortDropdownAnalytics">
+          <button class="sort-option" data-range="week">This Week</button>
+          <button class="sort-option" data-range="month">This Month</button>
+          <button class="sort-option" data-range="year">This Year</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-card pending">
+      <div class="card-title">Pending</div>
+      <div class="card-sub-line">
+        <span class="status-label">New (within 24 hrs)</span>
+        <span id="pendingNew" class="status-count">0</span>
+      </div>
+      <div class="card-sub-line">
+        <span class="status-label">Total</span>
+        <span id="pendingTotal" class="status-count">0</span>
+      </div>
+    </div>
+
+    <div class="summary-card verified">
+      <div class="card-inline">
+        <span class="status-label">Verified</span>
+        <span id="verifiedCount" class="status-count">0</span>
+      </div>
+    </div>
+
+    <div class="summary-card resolved">
+      <div class="card-inline">
+        <span class="status-label">Resolved</span>
+        <span id="resolvedCount" class="status-count">0</span>
+      </div>
+    </div>
+
+    <div class="summary-card rejected">
+      <div class="card-inline">
+        <span class="status-label">Rejected</span>
+        <span id="rejectedCount" class="status-count">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sort Filter for Report Box -->
+  <div class="all-sort-wrapper">
+    <div class="report-sort-icon" id="reportSortIcon" title="Sort Reports">
+      <i class="fas fa-filter sort-icon" id="sortToggleReports" title="Sort Complaints"></i>
+      <div class="sort-dropdown" id="sortDropdownReports">
+        <button class="sort-option" data-range="week">This Week</button>
+        <button class="sort-option" data-range="month">This Month</button>
+        <button class="sort-option" data-range="year">This Year</button>
+        <button class="sort-option" data-range="all">All Time</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report List Container -->
+  <div id="report-box" class="report-box"></div>
+</div>
+
+      </section>
+   
+
+        <!-- ANALYTICS -->
+<!--    <section class="analytics-section">
+        <div class="analytics-container"> -->
+            <!-- Header and Tabs Row 
+            <div class="analytics-header-row">
+                <div class="analytics-header">
+                    <h1>Analytics</h1>
+                    <p>Monitor Complaint Trends, Response Timelines, and Community Needs</p>
+                </div>
+                
+                <div class="analytics-tabs">
+                    <button class="tab-button active" onclick="switchTab(event, 'plan')">Insights</button>
+                    <button class="tab-button" onclick="switchTab(event, 'trends')">Trends</button>
+                   
+                </div>
+            </div> -->
+
+            <!-- Content 
+            <div class="analytics-content"> -->
+                <!-- Trends Tab 
+                <div class="tab-content active" id="plan">
+                    <div class="content-top">
+                        <div class="content-header">
+                            <h2>Understand Local Issues</h2>
+                            <p>Track recurring problems and your community’s response trends</p>
+                        </div>
+                        <div class="info-cards"> -->
+                          
+                            <!--div class="info-card most-interrupted">
+                                <h3>Avg. Verification Time</h3>
+                                <div id="mostInterrupted" class="value">hr/day</div>
+                            </div>
+                            <div class="info-card least-interrupted">
+                                <h3>Avg. Resolution Time</h3>
+              
+                                <div id="leastInterrupted" class="value">hr/day</div>
+                            </div-->
+                    <!--    </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="heatmap-section">
+                              <h3 style="margin-bottom: 10px;">See where complaints happen most — and what kind they are</h3>
+                              <div class="recurring-chart-container">
+                                  <canvas id="recurringProblemsChart"></canvas>
+                              </div>
+                          </div>
+                        </div> -->
+                        <!--div class="content-right">
+                            <div class="line-chart-section" style="margin: 30px 0;">
+                              <h3 style="margin-bottom: 10px;">Verification vs Resolution Time</h3>
+                              <canvas id="verificationResolutionLineChart" height="120"></canvas>
+
+                            </div>
+                            </div>
+                        </div-->
+
+                    <!--    <div class="content-right">
+                          <div class="line-chart-section" style="margin: 30px 0; text-align: center; padding: 30px;">
+                            <div style="font-size: 40px; color: #ff9800; margin-bottom: 10px;">&#9888;</div> --> <!-- Unicode Warning Icon 
+                            <h3 style="margin-bottom: 5px;">Verification vs Resolution Time</h3>
+                            <p style="color: #666; font-size: 14px;">This insight is temporarily under maintenance. Please check back soon.</p>
+                          </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Plan Tab 
+                <div class="tab-content" id="trends">
+                    <div class="content-top">
+                        <div class="content-header">
+                            <h2>Service Planning</h2>
+                            <p>Planned maintenance and scheduled interruptions</p>
+                        </div>
+                        <div class="info-cards">
+                            <div class="info-card">
+                                <h3>Scheduled</h3>
+                                <div class="value">3</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>This Week</h3>
+                                <div class="value">1</div>
+                            </div>
+                            <div class="info-card">
+                                <h3>Next Week</h3>
+                                <div class="value">2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-left">
+                            <div class="peak-problems-section">
+                                <h3>Maintenance Schedule</h3>
+                                <div style="height: 280px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.3); border-radius: 10px; margin-top: 10px;">
+                                    <span style="color: #2d3436; opacity: 0.7;">Calendar view here</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-right">
+                            <div class="graph-placeholder">
+                                Planning timeline visualization
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+    </section>
+
+    <footer class="footer">
+      <div class="footer-overlay"></div>
+        <div class="footer-container">
+          <div class="footer-bottom">
+                <div class="logos-section">
+        <div class="logos">
+          <img src="img/logo_sampaloc.png" alt="City logo" />
+          <img src="img/logo_mw1.png" alt="Manila Water logo" />
+        </div>
+        <p class="footer-copyright">© 2025 Manila Water - Sampaloc. All Rights Reserved.</p>
+      </div>
+
+          
+          <div class="divider-vertical"></div>
+          
+          <div class="address-section">
+            <p>MWSS Administration Building 489</p>
+            <p>Katipunan Road, Balara Quezon City</p>
+            <p>Philippines 1105</p>
+          </div>
+          
+          <div class="divider-vertical"></div>
+          
+          <div class="contact-section">
+            <div class="contact-info-wrapper">
+              <div class="hotline-social-wrapper">
+                <p class="hotline">Hotline: 1627 | (02) 8403 2410</p>
+                <div class="social-icons">
+                  <a href="https://www.facebook.com/manilawater/" target="_blank">
+                    <img src="img/ic_facebook.png" alt="Facebook" />
+                  </a>
+                  <a href="https://x.com/ManilaWaterPH" target="_blank">
+                    <img src="img/ic_twitter.png" alt="Twitter" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--------------------------- LOGOUT POP UP  ------------------------>
+<div class="logout-popup" id="logoutPopup">
+    <div class="logout-popup-content">
+      <h3>Are you sure you want to log out?</h3>
+      <button class="yes-btn" onclick="confirmLogout()">Yes</button>
+      <button class="no-btn" onclick="hideLogoutPopup()">No</button>
+    </div>
+  </div>
+<!--------------------------- PAGE MAINTENANCE POP UP  ------------------------>
+<div id="trendsComingSoon" class="coming-soon-modal" style="display:none;">
+  <div class="coming-soon-content">
+    <div class="coming-soon-icon">
+      <i class="fas fa-tools"></i>
+    </div>
+    <h2>Improving Your View</h2>
+    <p></p>We're enhancing this section to bring you better insights into local service issues and response trends.</p>
+    <blockquote>
+        Please check back later — this section is temporarily under maintenance.    </blockquote>
+    <button id="closeComingSoon" class="coming-soon-close">Close</button>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@1.1.0/dist/chartjs-chart-matrix.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script src="js/brgy_adm_dashboard.js" defer></script>
+</body>
+</html> 

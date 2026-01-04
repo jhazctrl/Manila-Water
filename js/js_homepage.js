@@ -645,22 +645,18 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch('php/get_barangays.php')
       .then(response => response.json())
       .then(data => {
-        const options = data.map(brgy => ({ value: brgy.id, label: brgy.name }));
+        const options = data.map(brgy => ({ value: brgy.barangay_id, label: brgy.barangay_name }));
         barangayChoices.setChoices(options, 'value', 'label', true);
       });
     barangayDropdown.addEventListener('change', function () {
       const barangayId = this.value;
       streetChoices.clearChoices();
-      fetch('php/get_streets.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'barangay_id=' + encodeURIComponent(barangayId)
-      })
+      fetch('php/get_streets.php?barangay_id=' + encodeURIComponent(barangayId))
         .then(response => response.json())
         .then(data => {
-          const options = data.map(street => ({ value: street.id, label: street.name }));
-          streetChoices.setChoices(options, 'value', 'label', true);
-        });
+       const options = data.map(street => ({ value: street.street_id, label: street.street_name }));
+        streetChoices.setChoices(options, 'value', 'label', true);
+  });
     });
   }
 

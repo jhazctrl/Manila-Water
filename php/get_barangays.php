@@ -1,28 +1,35 @@
 <?php
-$serverName = "TANMINJA\\MSSQLSERVER01,1433";
-$connectionOptions = [
-    "Database" => "MNL_Water_Sampaloc",
-    "Uid" => "Jhaz",    
-    "PWD" => "jzadmin",   
-    "TrustServerCertificate" => true
-];
+// Prevent any output before headers
+ob_start();
 
-$conn = sqlsrv_connect($serverName, $connectionOptions);
+// Include MongoDB connection
+require_once __DIR__ . '/config.php';
 
-if ($conn === false) {
+try {
+    // Get all barangays
+    $barangays = [];
+    $cursor = $db->Barangays->find([], ['sort' => ['brgy_id' => 1]]);
+    
+    foreach ($cursor as $doc) {
+        $barangays[] = [
+            'barangay_id' => $doc['brgy_id'],  
+            'barangay_name' => $doc['brgy_number']  
+        ];
+    }
+    
+    // Clear any accidental output
+    ob_end_clean();
+    
+    header('Content-Type: application/json');
+    echo json_encode($barangays);
+    
+} catch (Exception $e) {
+    ob_end_clean();
     http_response_code(500);
-    echo json_encode(["error" => "Database connection failed", "details" => sqlsrv_errors()]);
-    exit;
+    header('Content-Type: application/json');
+    echo json_encode([
+        "error" => "Database query failed", 
+        "details" => $e->getMessage()
+    ]);
 }
-
-$query = "SELECT brgy_id AS id, brgy_number AS name FROM Barangays";
-$stmt = sqlsrv_query($conn, $query);
-
-$barangays = [];
-while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-    $barangays[] = $row;
-}
-
-header('Content-Type: application/json');
-echo json_encode($barangays);
 ?>

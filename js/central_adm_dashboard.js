@@ -66,9 +66,14 @@ function initializeDefaultTab() {
 
     // Load reports data function
     function loadReportsData() {
+        console.log('🔍 loadReportsData() called');
         fetch('php/get_complaints.php')
-            .then(res => res.json())
-            .then(data => {
+        .then(res => {
+            console.log('📡 Response received:', res.status); 
+            return res.json();
+        })
+        .then(data => {
+            console.log('📦 Data received:', data)
                 if (data.success) {
                     const tbody = document.getElementById('reports-table-body');
                     updateComplaintStats(data.stats); 
@@ -77,6 +82,8 @@ function initializeDefaultTab() {
                          const filteredReports = data.data.filter(report =>
                         report.status === 'Verified' || report.status === 'Rejected'
                     );
+
+                    console.log('✅ Filtered reports count:', filteredReports.length);
 
                     filteredReports.forEach(report => {
                         const row = document.createElement('tr');
@@ -104,6 +111,7 @@ function initializeDefaultTab() {
                         });
                     });
                 }
+            }else {console.error('Response not successful:', data); 
             }
         })
         .catch(error => {
@@ -113,36 +121,125 @@ function initializeDefaultTab() {
     }
 
     function showComplaintPopup(report) {
-        console.log('showComplaintPopup called', report);
-        const image = report.supporting_img
-            ? `<img src="uploads/${report.supporting_img}" alt="Report Image">`
-            : '<div class="image-placeholder"><img src="img/ic_imgPlaceholder.png" alt="Placeholder"></div>';
+    console.log('showComplaintPopup called', report);
+    
+    // Handle image
+    const image = report.supporting_img
+        ? `<img src="uploads/${report.supporting_img}" alt="Report Image" class="complaint-image">`
+        : '<div class="image-placeholder"><img src="img/ic_imgPlaceholder.png" alt="Placeholder"></div>';
 
-        let actionHTML = '';
-        if (report.status === 'Verified') {
-            actionHTML = `<button class="resolve-btn" onclick="confirmResolveComplaint('${report.complaint_id}')">Resolve</button>`;
-        } else if (report.status === 'Rejected') {
-            actionHTML = `<p class="rejection-reason">Reason for rejection: (Not available yet)</p>`;
-        }
+    // Determine action buttons based on status
+    let footerButtons = '';
+    
+    if (report.status === 'Verified') {
+        // For Verified complaints: show Reject and Resolve buttons
+        footerButtons = `
+            <button class="complaint-action-btn reject" onclick="confirmRejectComplaint('${report.complaint_id}')">
+                Reject
+            </button>
+            <button class="complaint-action-btn secondary" onclick="closeComplaintModal()">Close</button>
+            <button class="complaint-action-btn primary" onclick="confirmResolveComplaint('${report.complaint_id}')">
+                Resolve
+            </button>
+        `;
+    } else if (report.status === 'Rejected') {
+        // For Rejected complaints: only show Close button
+        footerButtons = `
+            <button class="complaint-action-btn secondary" onclick="closeComplaintModal()">Close</button>
+        `;
+    } else {
+        // For any other status: only show Close button
+        footerButtons = `
+            <button class="complaint-action-btn secondary" onclick="closeComplaintModal()">Close</button>
+        `;
+    }
 
-        const modalContent = `
-            <div class="complaint-modal-overlay">
-                <div class="complaint-modal">
-                    <h3>Complaint #${report.complaint_id}</h3>
-                    <p><strong>Type:</strong> ${report.complaint_type}</p>
-                    <p><strong>Status:</strong> ${report.status}</p>
-                    <p><strong>Submitted:</strong> ${report.complaint_date}</p>
-                    <p><strong>Address:</strong> ${report.full_address}</p>
-                    <p><strong>Submitted by:</strong> ${report.submitted_by}</p>
-                    <p><strong>Contact:</strong> ${report.contact_no} || N/A</p>
-                    <p><strong>Description:</strong> ${report.complaint_description ? report.complaint_description : 'No description provided.'}</p>
-                    ${image}
-                    ${actionHTML}
-                    <button onclick="closeComplaintModal()">Close</button>
-                </div>
+    // Show rejection reason in body if rejected
+    let rejectionReasonHTML = '';
+    if (report.status === 'Rejected') {
+        rejectionReasonHTML = `
+            <div class="complaint-info-item">
+                <span class="complaint-info-label">Reason for rejection:</span>
+                <span class="complaint-info-value">(Not available yet)</span>
             </div>
         `;
-        document.body.insertAdjacentHTML('beforeend', modalContent);
+    }
+
+    // Create modal with proper structure
+    const modalContent = `
+        <div class="complaint-modal-overlay">
+            <div class="complaint-modal">
+                
+                <!-- Header -->
+                <div class="complaint-modal-header">
+                    <h2>Complaint #${report.complaint_id}</h2>
+                    <button class="complaint-modal-close" onclick="closeComplaintModal()">×</button>
+                </div>
+                
+                <!-- Body -->
+                <div class="complaint-modal-body">
+                    
+                    <!-- Info Grid -->
+                    <div class="complaint-info-grid">
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Type:</span>
+                            <span class="complaint-info-value">${report.complaint_type}</span>
+                        </div>
+                        
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Status:</span>
+                            <span class="status-badge ${report.status.toLowerCase()}">${report.status}</span>
+                        </div>
+                        
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Submitted:</span>
+                            <span class="complaint-info-value">${report.complaint_date}</span>
+                        </div>
+                        
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Address:</span>
+                            <span class="complaint-info-value">${report.full_address}</span>
+                        </div>
+                        
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Submitted by:</span>
+                            <span class="complaint-info-value">${report.submitted_by}</span>
+                        </div>
+                        
+                        <div class="complaint-info-item">
+                            <span class="complaint-info-label">Contact:</span>
+                            <span class="complaint-info-value">${report.contact_no} || N/A</span>
+                        </div>
+                        
+                        ${rejectionReasonHTML}
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="complaint-description">
+                        <div class="complaint-description-label">Description:</div>
+                        <div class="complaint-description-text">${report.complaint_description ? report.complaint_description : 'No description provided.'}</div>
+                    </div>
+                    
+                    <!-- Image Section -->
+                    <div class="complaint-image-section">
+                        <span class="complaint-image-label">Attached Image:</span>
+                        <div class="complaint-image-container">
+                            ${image}
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Footer with Action Buttons -->
+                <div class="complaint-modal-footer">
+                    ${footerButtons}
+                </div>
+                
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalContent);
     }
 
     function closeComplaintModal() {
@@ -166,6 +263,35 @@ function initializeDefaultTab() {
                 alert('Complaint marked as resolved.');
                 closeComplaintModal();
                 // Optionally reload complaints table:
+                if (typeof loadReportsData === 'function') loadReportsData();
+            } else {
+                alert('Failed to update status: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(() => alert('Error updating complaint status.'));
+    }
+};
+
+window.confirmRejectComplaint = function(complaint_id) {
+    // Optional: You can add a prompt to ask for rejection reason
+    const reason = prompt('Please provide a reason for rejecting this complaint (optional):');
+    
+    if (confirm('Are you sure you want to reject this complaint?')) {
+        fetch('php/update_complaintStatus.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                complaint_id: complaint_id, 
+                status: 'Rejected',
+                reason: reason || 'No reason provided'  // Include reason if you want to save it
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Complaint marked as rejected.');
+                closeComplaintModal();
+                // Reload complaints table
                 if (typeof loadReportsData === 'function') loadReportsData();
             } else {
                 alert('Failed to update status: ' + (data.message || 'Unknown error'));

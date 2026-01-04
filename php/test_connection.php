@@ -1,19 +1,33 @@
 <?php
-$serverName = "TANMINJA\\MSSQLSERVER01,1433";
+// Load MongoDB library
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$connectionOptions = array(
-    "Database" => "MNL_Water_Sampaloc",
-    "Uid" => "Jhaz",
-    "PWD" => "jzadmin"
-);
-
-$conn = sqlsrv_connect($serverName, $connectionOptions);
-
-if ($conn === false) {
+try {
+    // MongoDB connection
+    $client = new MongoDB\Client("mongodb://localhost:27017");
+    
+    // Select database
+    $db = $client->MNL_Water_Sampaloc;
+    
+    // Test connection by pinging
+    $db->command(['ping' => 1]);
+    
+    echo "✅ Connected successfully to MongoDB!<br>";
+    echo "Database: MNL_Water_Sampaloc<br>";
+    
+    // List all collections
+    $collections = $db->listCollections();
+    echo "<br><strong>Available Collections:</strong><br>";
+    foreach ($collections as $collection) {
+        $collectionName = $collection->getName();
+        $count = $db->$collectionName->countDocuments([]);
+        echo "- $collectionName ($count documents)<br>";
+    }
+    
+} catch (Exception $e) {
+    echo "❌ Connection failed!<br>";
     echo "<pre>";
-    print_r(sqlsrv_errors());
+    echo "Error: " . $e->getMessage();
     echo "</pre>";
-} else {
-    echo "✅ Connected successfully to SQL Server!";
 }
 ?>

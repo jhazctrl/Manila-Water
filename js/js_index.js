@@ -23,10 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.text())
             .then(html => {
                 if (loadingIndicator) loadingIndicator.style.display = "none";
-                tableBody.innerHTML = html;
-                // Add status color classes after loading
-                addStatusColorClasses();
-                allRows = Array.from(tableBody.querySelectorAll('tr')).map(row => row.cloneNode(true));
+                if (tableBody) {
+                    tableBody.innerHTML = html;
+                    // Add status color classes after loading
+                    addStatusColorClasses();
+                    allRows = Array.from(tableBody.querySelectorAll('tr')).map(row => row.cloneNode(true));
+                }
             })
             .catch(error => {
                 if (loadingIndicator) loadingIndicator.style.display = "none";
@@ -36,22 +38,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add status color classes to the status column
     function addStatusColorClasses() {
-      tableBody.querySelectorAll('tr').forEach(row => {
-          const statusCell = row.cells && row.cells[5];
-          if (statusCell) {
-              const status = statusCell.textContent.trim().toLowerCase();
-              statusCell.classList.remove('status-ongoing', 'status-upcoming');
-              if (status === 'ongoing') {
-                  statusCell.classList.add('status-ongoing');
-              } else if (status === 'upcoming') {
-                  statusCell.classList.add('status-upcoming');
-              }
-          }
-      });
-  }
+        if (!tableBody) return;
+        tableBody.querySelectorAll('tr').forEach(row => {
+            const statusCell = row.cells && row.cells[5];
+            if (statusCell) {
+                const status = statusCell.textContent.trim().toLowerCase();
+                statusCell.classList.remove('status-ongoing', 'status-upcoming');
+                if (status === 'ongoing') {
+                    statusCell.classList.add('status-ongoing');
+                } else if (status === 'upcoming') {
+                    statusCell.classList.add('status-upcoming');
+                }
+            }
+        });
+    }
 
     // Function to filter advisories based on search term
     function filterAdvisories(searchTerm) {
+        if (!tableBody) return;
         if (!allRows.length) {
             allRows = Array.from(tableBody.querySelectorAll('tr')).map(row => row.cloneNode(true));
         }
@@ -77,51 +81,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Dropdown Menu ---
     window.toggleDropdown = function () {
-        document.getElementById('dropdownMenu').classList.toggle('show');
-    };
-
-    window.onclick = function (e) {
-        if (!e.target.closest('.dropbtn')) {
-            document.getElementById('dropdownMenu').classList.remove('show');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (dropdownMenu) {
+            dropdownMenu.classList.toggle('show');
         }
     };
 
-    // --- Barangay and Street Dropdowns ---
+    window.onclick = function (e) {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (dropdownMenu && !e.target.closest('.dropbtn')) {
+            dropdownMenu.classList.remove('show');
+        }
+    };
+
+    // --- Barangay and Street Dropdowns (only if they exist) ---
     const barangayDropdown = document.getElementById("barangayDropdown");
     const streetDropdown = document.getElementById("streetDropdown");
 
-    // Load barangays into barangayDropdown
-    fetch('php/get_barangays.php')
-        .then(response => response.json())
-        .then(data => {
-            barangayDropdown.innerHTML = '<option value="">Select Barangay</option>';
-            data.forEach(brgy => {
-                const option = document.createElement('option');
-                option.value = brgy.id;
-                option.textContent = brgy.name;
-                barangayDropdown.appendChild(option);
-            });
-        });
-
-    // When barangay is selected, load streets for that barangay
-    barangayDropdown.addEventListener('change', function () {
-        const barangayId = this.value;
-        streetDropdown.innerHTML = '<option value="">Select Street</option>';
-        if (!barangayId) return;
-
-        fetch('php/get_streets.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'barangay_id=' + encodeURIComponent(barangayId)
-        })
+    // Only run if both dropdowns exist
+    if (barangayDropdown && streetDropdown) {
+        // Load barangays into barangayDropdown
+        fetch('php/get_barangays.php')
             .then(response => response.json())
             .then(data => {
-                data.forEach(street => {
+                barangayDropdown.innerHTML = '<option value="">Select Barangay</option>';
+                data.forEach(brgy => {
                     const option = document.createElement('option');
-                    option.value = street.id;
-                    option.textContent = street.name;
-                    streetDropdown.appendChild(option);
+                    option.value = brgy.id;
+                    option.textContent = brgy.name;
+                    barangayDropdown.appendChild(option);
                 });
-            });
-    });
+            })
+            .catch(error => console.error('Error loading barangays:', error));
+
+        // When barangay is selected, load streets for that barangay
+        barangayDropdown.addEventListener('change', function () {
+            const barangayId = this.value;
+            streetDropdown.innerHTML = '<option value="">Select Street</option>';
+            if (!barangayId) return;
+
+            fetch('php/get_streets.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'barangay_id=' + encodeURIComponent(barangayId)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(street => {
+                        const option = document.createElement('option');
+                        option.value = street.id;
+                        option.textContent = street.name;
+                        streetDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading streets:', error));
+        });
+    }
 });

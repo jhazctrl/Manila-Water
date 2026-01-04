@@ -10,17 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-// Database connection
-function getConnection() {
-    try {
-        $pdo = new PDO("sqlsrv:Server=Claire\MNL_Water;Database=MNL_Water_Sampaloc", "sa", "MNLWater");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $pdo;
-    } catch (PDOException $e) {
-        error_log("Database connection failed: " . $e->getMessage());
-        sendResponse(500, false, "Database connection failed");
-    }
-}
+// Include MongoDB connection
+require_once __DIR__ . '/../config.php';
 
 // Send JSON response
 function sendResponse($code, $success, $message, $data = null) {
@@ -40,29 +31,31 @@ function sendResponse($code, $success, $message, $data = null) {
 function validateLocationIds($db, $streetId, $barangayId) {
     try {
         // Check if street exists
-        $stmt = $db->prepare("SELECT street_id, street_name FROM Streets WHERE street_id = ?");
-        $stmt->execute([$streetId]);
-        $street = $stmt->fetch(PDO::FETCH_ASSOC);
+        $street = $db->Streets->findOne(['street_id' => (int)$streetId]);
         
         if (!$street) {
             return ['error' => "Invalid street selection (ID: $streetId)"];
         }
         
         // Check if barangay exists
-        $stmt = $db->prepare("SELECT brgy_id, brgy_number FROM Barangays WHERE brgy_id = ?");
-        $stmt->execute([$barangayId]);
-        $barangay = $stmt->fetch(PDO::FETCH_ASSOC);
+        $barangay = $db->Barangays->findOne(['brgy_id' => (int)$barangayId]);
         
         if (!$barangay) {
             return ['error' => "Invalid barangay selection (ID: $barangayId)"];
         }
         
         return [
-            'street' => $street,
-            'barangay' => $barangay
+            'street' => [
+                'street_id' => $street['street_id'],
+                'street_name' => $street['street_name']
+            ],
+            'barangay' => [
+                'brgy_id' => $barangay['brgy_id'],
+                'brgy_number' => $barangay['brgy_number']
+            ]
         ];
         
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         error_log("Error validating location IDs: " . $e->getMessage());
         return ['error' => 'Database error while validating location'];
     }
@@ -81,24 +74,56 @@ function debugLog($message, $data = null) {
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
-    $db = getConnection();
+    // $db is already available from config.php
     
     if ($method === 'GET') {
         if (isset($_GET['action']) && $_GET['action'] === 'emails') {
-            // Get all emails with their locations
-            $stmt = $db->query("
-                SELECT 
-                    gu.guest_user_id, 
-                    gu.guest_email,
-                    gu.street_id,
-                    gu.brgy_id,
-                    CONCAT(s.street_name, ', ', b.brgy_number) AS full_location
-                FROM Guest_users gu
-                JOIN Streets s ON gu.street_id = s.street_id
-                JOIN Barangays b ON gu.brgy_id = b.brgy_id
-                ORDER BY gu.guest_user_id DESC
-            ");
-            $emails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Get all emails with their locations using aggregation
+            $pipeline = [
+                [
+                    '$lookup' => [
+                        'from' => 'Streets',
+                        'localField' => 'street_id',
+                        'foreignField' => 'street_id',
+                        'as' => 'street_info'
+                    ]
+                ],
+                [
+                    '$lookup' => [
+                        'from' => 'Barangays',
+                        'localField' => 'brgy_id',
+                        'foreignField' => 'brgy_id',
+                        'as' => 'barangay_info'
+                    ]
+                ],
+                [
+                    '$unwind' => '$street_info'
+                ],
+                [
+                    '$unwind' => '$barangay_info'
+                ],
+                [
+                    '$project' => [
+                        'guest_user_id' => 1,
+                        'guest_email' => 1,
+                        'street_id' => 1,
+                        'brgy_id' => 1,
+                        'full_location' => [
+                            '$concat' => [
+                                '$street_info.street_name',
+                                ', ',
+                                '$barangay_info.brgy_number'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    '$sort' => ['guest_user_id' => -1]
+                ]
+            ];
+            
+            $emails = $db->Guest_users->aggregate($pipeline)->toArray();
+            
             sendResponse(200, true, "Emails retrieved successfully", [
                 'emails' => $emails, 
                 'count' => count($emails)
@@ -156,19 +181,12 @@ try {
         // Normalize email
         $email = strtolower($email);
         
-        // Start transaction
-        $db->beginTransaction();
-        debugLog("Transaction started");
-        
         try {
             // Check if email already exists
-            $stmt = $db->prepare("SELECT guest_user_id FROM Guest_users WHERE guest_email = ?");
-            $stmt->execute([$email]);
-            $existingGuest = $stmt->fetch(PDO::FETCH_ASSOC);
+            $existingGuest = $db->Guest_users->findOne(['guest_email' => $email]);
             
             if ($existingGuest) {
-                $db->rollBack();
-                debugLog("Email already exists", ['email' => $email, 'guest_id' => $existingGuest['guest_id']]);
+                debugLog("Email already exists", ['email' => $email]);
                 sendResponse(409, false, "Email is already subscribed", ['email' => $email]);
             }
             
@@ -176,7 +194,6 @@ try {
             $locationValidation = validateLocationIds($db, $streetId, $barangayId);
             
             if (isset($locationValidation['error'])) {
-                $db->rollBack();
                 debugLog("Location validation failed", $locationValidation['error']);
                 sendResponse(400, false, $locationValidation['error']);
             }
@@ -189,39 +206,35 @@ try {
                 'barangay' => $barangay
             ]);
             
-            // Insert new email into Guest_emails table
-            $stmt = $db->prepare("
-                INSERT INTO Guest_users (guest_email, brgy_id, street_id)
-                OUTPUT INSERTED.guest_user_id
-                VALUES (?, ?, ?)
-            ");
-            $insertResult = $stmt->execute([$email, $barangayId, $streetId]);
-
-            if (!$insertResult) {
+            // Get next guest_user_id (auto-increment simulation)
+            $lastGuest = $db->Guest_users->findOne([], ['sort' => ['guest_user_id' => -1]]);
+            $nextGuestId = $lastGuest ? ($lastGuest['guest_user_id'] + 1) : 1;
+            
+            // Insert new guest user
+            $insertData = [
+                'guest_user_id' => $nextGuestId,
+                'guest_email' => $email,
+                'brgy_id' => $barangayId,
+                'street_id' => $streetId,
+                'created_at' => new MongoDB\BSON\UTCDateTime()
+            ];
+            
+            $result = $db->Guest_users->insertOne($insertData);
+            
+            if (!$result->getInsertedId()) {
                 throw new Exception("Failed to insert guest user");
             }
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $guestId = $result['guest_user_id'] ?? 0;
-
-            if (!$guestId || $guestId <= 0) {
-                throw new Exception("Failed to get valid guest_user_id after insertion");
-            }
-
+            
             debugLog("Guest user inserted successfully", [
-                'guest_user_id' => $guestId,
+                'guest_user_id' => $nextGuestId,
                 'brgy_id' => $barangayId,
                 'street_id' => $streetId
             ]);
             
-            // Commit transaction
-            $db->commit();
-            debugLog("Transaction committed successfully");
-            
             // Prepare response data
             $responseData = [
                 'email' => $email,
-                'guest_id' => $guestId,
+                'guest_id' => $nextGuestId,
                 'location' => $street['street_name'] . ', ' . $barangay['brgy_number'],
                 'street_id' => $streetId,
                 'street_name' => $street['street_name'],
@@ -232,25 +245,16 @@ try {
             debugLog("Subscription completed successfully", $responseData);
             sendResponse(200, true, "Subscription successful! You will receive water interruption advisories for your area.", $responseData);
             
-        } catch (PDOException $e) {
-            // Rollback transaction
-            $db->rollBack();
-            debugLog("Database error occurred", [
-                'error' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]);
+        } catch (Exception $e) {
+            debugLog("Error occurred", $e->getMessage());
             
-            // Check for duplicate key violation
-            if (strpos(strtolower($e->getMessage()), 'duplicate') !== false || 
-                strpos(strtolower($e->getMessage()), 'unique') !== false) {
+            // Check for duplicate key
+            if (strpos($e->getMessage(), 'duplicate') !== false || 
+                strpos($e->getMessage(), 'E11000') !== false) {
                 sendResponse(409, false, "Email is already subscribed");
             } else {
-                sendResponse(500, false, "Database error occurred while processing subscription");
+                sendResponse(500, false, "An error occurred while processing your subscription: " . $e->getMessage());
             }
-        } catch (Exception $e) {
-            $db->rollBack();
-            debugLog("General error occurred", $e->getMessage());
-            sendResponse(500, false, "An error occurred while processing your subscription: " . $e->getMessage());
         }
     }
     
@@ -262,37 +266,25 @@ try {
     sendResponse(500, false, "Server error occurred");
 }
 
-// Debug endpoint - add ?debug=tables to test database tables
+// Debug endpoint - add ?debug=tables to test database collections
 if (isset($_GET['debug']) && $_GET['debug'] === 'tables') {
     try {
-        $db = getConnection();
-
-        // Test Guest_users table
-        $stmt = $db->query("SELECT COUNT(*) as count FROM Guest_users");
-        $guestUsersCount = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Test Streets table
-        $stmt = $db->query("SELECT COUNT(*) as count FROM Streets");
-        $streetCount = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // Test Barangays table
-        $stmt = $db->query("SELECT COUNT(*) as count FROM Barangays");
-        $barangayCount = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Count documents in each collection
+        $guestUsersCount = $db->Guest_users->countDocuments();
+        $streetCount = $db->Streets->countDocuments();
+        $barangayCount = $db->Barangays->countDocuments();
 
         // Get sample data
-        $stmt = $db->query("SELECT TOP 3 street_id, street_name FROM Streets");
-        $sampleStreets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $stmt = $db->query("SELECT TOP 3 brgy_id, brgy_number FROM Barangays");
-        $sampleBarangays = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sampleStreets = $db->Streets->find([], ['limit' => 3])->toArray();
+        $sampleBarangays = $db->Barangays->find([], ['limit' => 3])->toArray();
 
         echo json_encode([
-            'guest_users_count' => $guestUsersCount['count'],
-            'streets_count' => $streetCount['count'],
-            'barangays_count' => $barangayCount['count'],
+            'guest_users_count' => $guestUsersCount,
+            'streets_count' => $streetCount,
+            'barangays_count' => $barangayCount,
             'sample_streets' => $sampleStreets,
             'sample_barangays' => $sampleBarangays,
-            'tables_exist' => true,
+            'collections_exist' => true,
             'timestamp' => date('Y-m-d H:i:s')
         ]);
     } catch (Exception $e) {

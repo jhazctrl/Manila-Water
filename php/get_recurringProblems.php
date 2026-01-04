@@ -1,47 +1,103 @@
 <?php
+// ============================================
+// Get Recurring Problems - MongoDB Version
+// ============================================
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 header('Content-Type: application/json');
 
-// Database connection configuration
-$serverName = "TANMINJA\\MSSQLSERVER01,1433";
-$database = "MNL_Water_Sampaloc";
-$username = "Jhaz";
-$password = "jzadmin";
+// Use centralized config
+require_once __DIR__ . '/config.php';
 
 try {
-    // Set up the PDO connection
-    $conn = new PDO("sqlsrv:Server=$serverName;Database=$database", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Get the user's barangay ID from the session
-    $barangay_id = isset($_SESSION['barangay_id']) ? (int)$_SESSION['barangay_id'] : null;
+    $db = getConnection();
+    
+    // Get barangay ID from session
+    $barangay_id = $_SESSION['barangay_id'] ?? null;
+    
     if (!$barangay_id) {
-        echo json_encode(['error' => 'Missing barangay_id']);
-        exit();
+        echo json_encode([
+            'success' => false, 
+            'message' => 'Missing barangay_id in session.'
+        ]);
+        exit;
     }
-
-    $sql = "
-        SELECT 
-            s.street_name,
-            ct.complaint_type,
-            COUNT(*) as total
-        FROM Analytics a
-        JOIN Complaint_types ct ON a.complaint_type_id = ct.complaint_type_id
-        JOIN Streets s ON a.street_id = s.street_id
-        WHERE a.analytics_type_id = 1 AND a.brgy_id = :brgy_id AND a.street_id IS NOT NULL
-        GROUP BY s.street_name, ct.complaint_type
-        ORDER BY total DESC
-    ";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([':brgy_id' => $barangay_id]);
-
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    echo json_encode(['success' => true, 'data' => $data]);
-
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Database error', 'error' => $e->getMessage()]);
-    exit();
+    
+    // MongoDB aggregation pipeline to group complaints by street and type
+    $pipeline = [
+        [
+            '$match' => [
+                'barangay_id' => (int)$barangay_id
+            ]
+        ],
+        [
+            '$lookup' => [
+                'from' => 'Streets',
+                'localField' => 'street_id',
+                'foreignField' => 'street_id',
+                'as' => 'street_info'
+            ]
+        ],
+        [
+            '$lookup' => [
+                'from' => 'Complaint_types',
+                'localField' => 'complaint_type',
+                'foreignField' => 'complaint_type_id',
+                'as' => 'type_info'
+            ]
+        ],
+        [
+            '$unwind' => '$street_info'
+        ],
+        [
+            '$unwind' => '$type_info'
+        ],
+        [
+            '$group' => [
+                '_id' => [
+                    'street_name' => '$street_info.street_name',
+                    'complaint_type' => '$type_info.complaint_type'
+                ],
+                'total' => ['$sum' => 1]
+            ]
+        ],
+        [
+            '$sort' => [
+                'total' => -1,
+                '_id.street_name' => 1
+            ]
+        ],
+        [
+            '$project' => [
+                '_id' => 0,
+                'street_name' => '$_id.street_name',
+                'complaint_type' => '$_id.complaint_type',
+                'total' => 1
+            ]
+        ]
+    ];
+    
+    $cursor = $db->Complaints->aggregate($pipeline);
+    
+    $data = [];
+    foreach ($cursor as $doc) {
+        $data[] = [
+            'street_name' => $doc['street_name'],
+            'complaint_type' => $doc['complaint_type'],
+            'total' => (int)$doc['total']
+        ];
+    }
+    
+    echo json_encode([
+        'success' => true,
+        'data' => $data
+    ]);
+    
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
 }
 ?>
