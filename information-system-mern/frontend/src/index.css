@@ -1,0 +1,813 @@
+/* ═══════════════════════════════════════════════════════════
+   s_index.css - Public Landing Page Styles
+   Design: Non-fixed header, 50vh hero, dark advisories section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══ ROOT VARIABLES ═══ */
+:root {
+    --header-bg: rgba(30, 60, 60, 0.95);
+    --dark-teal: #1a4d4d;
+    --dark-blue-teal: #0d3d4d;
+    --text-dark: #1a1a1a;
+    --text-gray: #666666;
+    --text-light: #999999;
+    --text-white: #ffffff;
+    --bg-white: #ffffff;
+    --bg-light: #f5f5f5;
+    --border-gray: #e0e0e0;
+    --border-light: rgba(255, 255, 255, 0.2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.2);
+    --glass-dark: rgba(0, 0, 0, 0.3);
+    --glass-search: rgba(255, 255, 255, 0.15);
+    --overlay-hero: rgba(0, 0, 0, 0.3);
+    --status-upcoming: #ff5252;
+    --status-resolved: #4caf50;
+    --status-ongoing: #ff9800;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.2s ease;
+}
+
+/* ═══ GLOBAL RESET & BASE ═══ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-white);
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+/* ═══ MAIN CONTAINER ═══ */
+.index-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HEADER SECTION - Non-fixed, Scrolls with Page
+   ═══════════════════════════════════════════════════════════ */
+.index-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: transparent;
+    padding: 1.25rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+
+.index-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.index-logo-section:hover {
+    opacity: 0.9;
+}
+
+.index-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.index-logo-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.index-logo-text h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-white);
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.index-logo-text p {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.index-signup-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.index-signup-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.index-signup-btn:active {
+    transform: translateY(0);
+}
+
+.index-signup-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO SECTION - 50vh Height
+   ═══════════════════════════════════════════════════════════ */
+.index-hero {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.index-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.index-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.index-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--overlay-hero);
+    z-index: 2;
+}
+
+.index-hero-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.index-hero-logo {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADVISORIES SECTION - Dark Background with Image
+   ═══════════════════════════════════════════════════════════ */
+.index-advisories-section {
+    position: relative;
+    padding: 4rem 3rem 5rem;
+    background: linear-gradient(180deg, #0d3d4d 0%, #1a4d5d 100%);
+    background-image: url('/img/bg_advisory.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: overlay;
+    min-height: 50vh;
+}
+
+/* Dark overlay to ensure readability */
+.index-advisories-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        rgba(13, 61, 77, 0.9) 0%, 
+        rgba(26, 77, 93, 0.85) 100%);
+    z-index: 1;
+}
+
+/* Ensure content is above overlay */
+.index-advisories-section > * {
+    position: relative;
+    z-index: 2;
+}
+
+.advisories-section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-white);
+    text-align: center;
+    margin-bottom: 3rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ═══ SEARCH BAR - Dark Translucent ═══ */
+.advisories-search-wrapper {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    position: relative;
+}
+
+.advisories-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: var(--transition-smooth);
+}
+
+.advisories-search-bar:focus-within {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+    margin-right: 1rem;
+    transition: var(--transition-fast);
+}
+
+.advisories-search-bar:focus-within .search-icon {
+    color: var(--text-white);
+}
+
+.advisories-search-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: var(--text-white);
+    font-weight: 400;
+}
+
+.advisories-search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ADVISORIES TABLE - White with Rounded Corners
+   ═══════════════════════════════════════════════════════════ */
+.advisories-table-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--bg-white);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.advisories-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.advisories-table-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.advisories-table-scroll::-webkit-scrollbar-track {
+    background: var(--bg-light);
+}
+
+.advisories-table-scroll::-webkit-scrollbar-thumb {
+    background: var(--text-light);
+    border-radius: 4px;
+}
+
+.advisories-table-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--text-gray);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+thead {
+    background: var(--bg-light);
+}
+
+thead tr {
+    border-bottom: 2px solid var(--border-gray);
+}
+
+th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border-gray);
+    transition: var(--transition-fast);
+}
+
+tbody tr:hover {
+    background-color: rgba(13, 61, 77, 0.03);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    vertical-align: middle;
+}
+
+.advisory-desc {
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.advisory-date {
+    white-space: nowrap;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+}
+
+.table-empty {
+    text-align: center;
+    padding: 3rem 1.5rem !important;
+    color: var(--text-gray);
+    font-size: 1rem;
+    font-style: italic;
+}
+
+/* ═══ STATUS PILLS ═══ */
+.status-pill {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-upcoming {
+    background-color: var(--status-upcoming);
+    color: var(--text-white);
+}
+
+.status-resolved {
+    background-color: var(--status-resolved);
+    color: var(--text-white);
+}
+
+.status-ongoing {
+    background-color: var(--status-ongoing);
+    color: var(--text-white);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════ */
+
+/* Large Tablets & Small Desktops */
+@media (max-width: 1200px) {
+    .index-header {
+        padding: 1rem 2rem;
+    }
+    
+    .index-advisories-section {
+        padding: 3.5rem 2rem 4rem;
+    }
+    
+    .advisories-section-title {
+        font-size: 2.25rem;
+    }
+    
+    .index-hero-logo {
+        max-width: 400px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    .index-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .index-logo {
+        height: 42px;
+    }
+    
+    .index-logo-text h1 {
+        font-size: 1.1rem;
+    }
+    
+    .index-logo-text p {
+        font-size: 0.7rem;
+    }
+    
+    .index-signup-btn {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .index-hero {
+        height: 45vh;
+        min-height: 350px;
+    }
+    
+    .index-hero-logo {
+        max-width: 350px;
+    }
+    
+    .advisories-section-title {
+        font-size: 2rem;
+    }
+    
+    .advisories-search-bar {
+        padding: 0.65rem 1.25rem;
+    }
+    
+    .advisories-search-bar input {
+        font-size: 0.9rem;
+    }
+    
+    th, td {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Landscape & Small Tablets */
+@media (max-width: 768px) {
+    .index-header {
+        padding: 0.875rem 1.25rem;
+    }
+    
+    .index-logo {
+        height: 38px;
+    }
+    
+    .index-logo-section {
+        gap: 0.75rem;
+    }
+    
+    .index-logo-text h1 {
+        font-size: 1rem;
+    }
+    
+    .index-logo-text p {
+        font-size: 0.65rem;
+    }
+    
+    .index-signup-btn {
+        padding: 0.55rem 1rem;
+        font-size: 0.85rem;
+        gap: 0.4rem;
+    }
+    
+    .index-signup-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .index-hero {
+        height: 45vh;
+        min-height: 320px;
+    }
+    
+    .index-hero-logo {
+        max-width: 320px;
+    }
+    
+    .index-advisories-section {
+        padding: 3rem 1.25rem 3.5rem;
+    }
+    
+    .advisories-section-title {
+        font-size: 1.75rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .advisories-search-wrapper {
+        margin-bottom: 2.5rem;
+    }
+    
+    .advisories-search-bar {
+        padding: 0.6rem 1rem;
+    }
+    
+    .search-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 0.75rem;
+    }
+    
+    .advisories-search-bar input {
+        font-size: 0.85rem;
+    }
+    
+    table {
+        min-width: 800px;
+    }
+    
+    th {
+        padding: 0.75rem 1rem;
+        font-size: 0.75rem;
+    }
+    
+    td {
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .advisory-desc {
+        max-width: 250px;
+    }
+}
+
+/* Mobile Portrait */
+@media (max-width: 576px) {
+    .index-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .index-logo {
+        height: 32px;
+    }
+    
+    .index-logo-section {
+        gap: 0.5rem;
+    }
+    
+    .index-logo-text h1 {
+        font-size: 0.9rem;
+    }
+    
+    .index-logo-text p {
+        font-size: 0.6rem;
+    }
+    
+    .index-signup-btn {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+    }
+    
+    .index-signup-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .index-hero {
+        height: 40vh;
+        min-height: 280px;
+    }
+    
+    .index-hero-logo {
+        max-width: 260px;
+    }
+    
+    .index-advisories-section {
+        padding: 2.5rem 1rem 3rem;
+    }
+    
+    .advisories-section-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .advisories-search-wrapper {
+        margin-bottom: 2rem;
+    }
+    
+    .advisories-search-bar {
+        padding: 0.5rem 1rem;
+        border-radius: 40px;
+    }
+    
+    .search-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 0.5rem;
+    }
+    
+    .advisories-search-bar input {
+        font-size: 0.8rem;
+    }
+    
+    .advisories-table-container {
+        border-radius: 12px;
+    }
+    
+    table {
+        min-width: 700px;
+    }
+    
+    th {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.7rem;
+    }
+    
+    td {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.75rem;
+    }
+    
+    .advisory-desc {
+        max-width: 180px;
+    }
+    
+    .advisory-date {
+        font-size: 0.75rem;
+    }
+    
+    .status-pill {
+        padding: 0.3rem 0.75rem;
+        font-size: 0.7rem;
+    }
+    
+    .table-empty {
+        padding: 2rem 1rem !important;
+        font-size: 0.875rem;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 380px) {
+    .index-header {
+        padding: 0.625rem 0.75rem;
+    }
+    
+    .index-logo {
+        height: 28px;
+    }
+    
+    .index-logo-text h1 {
+        font-size: 0.85rem;
+    }
+    
+    .index-logo-text p {
+        font-size: 0.55rem;
+    }
+    
+    .index-signup-btn {
+        padding: 0.45rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .index-hero {
+        min-height: 260px;
+    }
+    
+    .index-hero-logo {
+        max-width: 220px;
+    }
+    
+    .advisories-section-title {
+        font-size: 1.25rem;
+    }
+    
+    .advisories-search-bar input {
+        font-size: 0.75rem;
+    }
+    
+    table {
+        min-width: 650px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES & ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+/* Smooth scroll enhancement */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .index-header,
+    .index-signup-btn,
+    .advisories-search-wrapper {
+        display: none;
+    }
+    
+    .index-hero {
+        height: auto;
+        min-height: 200px;
+    }
+    
+    .index-advisories-section {
+        padding: 2rem 1rem;
+        background: var(--bg-white) !important;
+    }
+    
+    .advisories-section-title {
+        color: var(--text-dark) !important;
+    }
+}
