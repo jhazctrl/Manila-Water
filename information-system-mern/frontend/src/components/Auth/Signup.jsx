@@ -25,16 +25,37 @@ const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const { register, isAuthenticated, error: authError, setError } = useAuth();
+    const { register, isAuthenticated, loading, error: authError, setError } = useAuth();
     const navigate = useNavigate();
 
+    // Redirect if already authenticated (only after loading completes)
     useEffect(() => {
-        if (isAuthenticated) navigate('/user-homepage');
-    }, [isAuthenticated]);
+        if (!loading && isAuthenticated) {
+            navigate('/user-homepage');
+        }
+    }, [loading, isAuthenticated, navigate]);
 
     useEffect(() => {
         return () => setError(null);
     }, [setError]);
+
+    // Show loading while checking authentication
+    if (loading) {
+        return (
+            <div className="signup-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+                <div style={{ textAlign: 'center', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
+                    <div className="loader" style={{ width: '40px', height: '40px', border: '4px solid rgba(255,255,255,0.3)', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Redirect authenticated users immediately (after loading)
+    if (!loading && isAuthenticated) {
+        navigate('/user-homepage');
+        return null;
+    }
 
     // Load barangays on mount
     useEffect(() => {

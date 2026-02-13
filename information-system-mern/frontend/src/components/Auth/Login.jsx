@@ -12,15 +12,15 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const { login, isAuthenticated, user, error: authError, setError } = useAuth();
+    const { login, isAuthenticated, user, loading, error: authError, setError } = useAuth();
     const navigate = useNavigate();
 
-    // Redirect if already authenticated
+    // Redirect if already authenticated (only after loading completes)
     useEffect(() => {
-        if (isAuthenticated && user) {
+        if (!loading && isAuthenticated && user) {
             redirectByRole(user.role_id);
         }
-    }, [isAuthenticated, user]);
+    }, [loading, isAuthenticated, user]);
 
     useEffect(() => {
         return () => setError(null);
@@ -34,6 +34,24 @@ const Login = () => {
             default: navigate('/user-homepage');
         }
     };
+
+    // Show loading while checking authentication
+    if (loading) {
+        return (
+            <div className="login-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+                <div style={{ textAlign: 'center', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
+                    <div className="loader" style={{ width: '40px', height: '40px', border: '4px solid rgba(255,255,255,0.3)', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Redirect authenticated users immediately (after loading)
+    if (!loading && isAuthenticated && user) {
+        redirectByRole(user.role_id);
+        return null;
+    }
 
     const validateForm = () => {
         const newErrors = {};
