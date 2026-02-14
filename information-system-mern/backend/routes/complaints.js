@@ -9,7 +9,7 @@ const { complaintRules, statusUpdateRules, validate } = require('../middleware/v
 const upload = require('../middleware/upload');
 const { ROLES } = require('../config/constants');
 
-// POST /api/complaints — Submit complaint (authenticated users)
+// POST /api/complaints â€" Submit complaint (authenticated users)
 router.post(
     '/',
     protect,
@@ -19,7 +19,15 @@ router.post(
     complaintController.submitComplaint
 );
 
-// GET /api/complaints — Get all (admin)
+// GET /api/complaints/brgy â€" Get barangay-specific complaints (barangay admin)
+router.get(
+    '/brgy',
+    protect,
+    authorize(ROLES.BARANGAY_ADMIN),
+    complaintController.getComplaints
+);
+
+// GET /api/complaints â€" Get all (admin)
 router.get(
     '/',
     protect,
@@ -27,10 +35,26 @@ router.get(
     complaintController.getComplaints
 );
 
-// GET /api/complaints/my — Get my complaints
+// GET /api/complaints/my â€" Get my complaints
 router.get('/my', protect, complaintController.getMyComplaints);
 
-// PUT /api/complaints/status — Update status (admin)
+// PUT /api/complaints/:id/verify â€" Verify complaint (barangay admin)
+router.put(
+    '/:id/verify',
+    protect,
+    authorize(ROLES.BARANGAY_ADMIN),
+    complaintController.verifyComplaint
+);
+
+// PUT /api/complaints/:id/reject â€" Reject complaint (barangay admin)
+router.put(
+    '/:id/reject',
+    protect,
+    authorize(ROLES.BARANGAY_ADMIN),
+    complaintController.rejectComplaint
+);
+
+// PUT /api/complaints/status â€" Update status (admin)
 router.put(
     '/status',
     protect,
@@ -40,7 +64,7 @@ router.put(
     complaintController.updateComplaintStatus
 );
 
-// GET /api/complaints/overview — Dashboard stats (admin)
+// GET /api/complaints/overview â€" Dashboard stats (admin)
 router.get(
     '/overview',
     protect,
@@ -48,7 +72,7 @@ router.get(
     complaintController.getComplaintsOverview
 );
 
-// GET /api/complaints/recurring — Recurring problems (admin)
+// GET /api/complaints/recurring â€" Recurring problems (admin)
 router.get(
     '/recurring',
     protect,

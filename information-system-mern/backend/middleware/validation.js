@@ -190,7 +190,10 @@ const statusUpdateRules = [
 
     body('status')
         .notEmpty().withMessage('Status is required')
-        .isIn(['Verified', 'Rejected', 'Resolved', 'verified', 'rejected', 'resolved'])
+        .isIn([
+            'Pending', 'Unresolved', 'Verified', 'Rejected', 'Resolved',
+            'pending', 'unresolved', 'verified', 'rejected', 'resolved'
+        ])
         .withMessage('Invalid status'),
 ];
 

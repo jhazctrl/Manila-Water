@@ -1,17 +1,18 @@
 /**
- * Location Routes — public (no auth needed for dropdowns)
+ * Location Routes
+ * Provides endpoints for fetching barangays and streets
  */
 const express = require('express');
 const router = express.Router();
 const locationController = require('../controllers/locationController');
 
-// GET /api/locations/barangays
+// GET /api/locations/barangays - Get all barangays
 router.get('/barangays', locationController.getBarangays);
 
-// GET /api/locations/streets  (optional ?brgy_id=N filter)
-router.get('/streets', locationController.getStreets);
+// GET /api/locations/barangays/:brgyId/streets - Get streets by barangay
+router.get('/barangays/:brgyId/streets', locationController.getStreetsByBarangay);
 
-// GET /api/locations/streets/:brgyId
-router.get('/streets/:brgyId', locationController.getStreetsByBarangay);
+// GET /api/locations/streets - Get all streets (optionally filtered by query param)
+router.get('/streets', locationController.getStreets);
 
 module.exports = router;

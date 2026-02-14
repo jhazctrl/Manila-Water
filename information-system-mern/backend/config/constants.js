@@ -22,6 +22,7 @@ module.exports = {
         VERIFIED: 'Verified',
         RESOLVED: 'Resolved',
         REJECTED: 'Rejected',
+        UNRESOLVED: 'Unresolved',
     },
 
     // Advisory Statuses

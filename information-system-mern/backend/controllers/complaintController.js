@@ -135,6 +135,7 @@ exports.getComplaints = async (req, res, next) => {
                     complaint_type: '$type_info.complaint_type',
                     status: 1,
                     complaint_date: 1,
+                    created_at: '$complaint_date', // Add alias for frontend compatibility
                     address_detail: 1,
                     street_name: '$street_info.street_name',
                     brgy_number: '$barangay_info.brgy_number',
@@ -168,7 +169,7 @@ exports.getComplaints = async (req, res, next) => {
             },
         ]);
 
-        const statsObj = { total: 0, pending: 0, verified: 0, resolved: 0, rejected: 0 };
+        const statsObj = { total: 0, pending: 0, unresolved: 0, verified: 0, resolved: 0, rejected: 0 };
         stats.forEach((s) => {
             if (statsObj.hasOwnProperty(s._id)) {
                 statsObj[s._id] = s.count;
@@ -229,30 +230,135 @@ exports.getMyComplaints = async (req, res, next) => {
 };
 
 /**
+ * PUT /api/complaints/:id/verify
+ * Verify a complaint (barangay admin only)
+ */
+exports.verifyComplaint = async (req, res, next) => {
+    try {
+        const complaint_id = req.params.id;
+
+        // Check if complaint exists and belongs to admin's barangay
+        const complaint = await Complaint.findOne({ complaint_id });
+
+        if (!complaint) {
+            return res.status(404).json({
+                success: false,
+                message: 'Complaint not found',
+            });
+        }
+
+        // Verify barangay admin can only verify complaints from their barangay
+        if (req.user.role_id === ROLES.BARANGAY_ADMIN && complaint.barangay_id !== req.user.barangay_id) {
+            return res.status(403).json({
+                success: false,
+                message: 'You can only verify complaints from your assigned barangay',
+            });
+        }
+
+        // Update status to Verified
+        const result = await Complaint.updateOne(
+            { complaint_id },
+            { $set: { status: 'Verified' } }
+        );
+
+        logger.info(`Complaint ${complaint_id} verified by user ${req.user.user_id}`);
+
+        res.status(200).json({
+            success: true,
+            message: 'Complaint verified successfully',
+            data: { complaint_id, status: 'Verified' },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * PUT /api/complaints/:id/reject
+ * Reject a complaint (barangay admin only)
+ */
+exports.rejectComplaint = async (req, res, next) => {
+    try {
+        const complaint_id = req.params.id;
+
+        // Check if complaint exists and belongs to admin's barangay
+        const complaint = await Complaint.findOne({ complaint_id });
+
+        if (!complaint) {
+            return res.status(404).json({
+                success: false,
+                message: 'Complaint not found',
+            });
+        }
+
+        // Verify barangay admin can only reject complaints from their barangay
+        if (req.user.role_id === ROLES.BARANGAY_ADMIN && complaint.barangay_id !== req.user.barangay_id) {
+            return res.status(403).json({
+                success: false,
+                message: 'You can only reject complaints from your assigned barangay',
+            });
+        }
+
+        // Update status to Rejected
+        const result = await Complaint.updateOne(
+            { complaint_id },
+            { $set: { status: 'Rejected' } }
+        );
+
+        logger.info(`Complaint ${complaint_id} rejected by user ${req.user.user_id}`);
+
+        res.status(200).json({
+            success: true,
+            message: 'Complaint rejected successfully',
+            data: { complaint_id, status: 'Rejected' },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
  * PUT /api/complaints/status
- * Update complaint status (role-based)
- * Converted from update_complaintStatus.php
+ * Update complaint status (enhanced for central admin full control)
+ * Central Admin can update ANY complaint to ANY status including resolved complaints
  */
 exports.updateComplaintStatus = async (req, res, next) => {
     try {
         const { complaint_id, status } = req.body;
         const role_id = req.user.role_id;
 
+        // Normalize status to capitalize first letter
+        const normalizeStatus = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+
         let finalStatus;
 
-        // Role-based status validation
-        if (role_id === ROLES.BARANGAY_ADMIN) {
+        // CENTRAL ADMIN (role_id = 3): Full control over ALL statuses
+        if (role_id === ROLES.CENTRAL_ADMIN) {
+            const allowedStatuses = ['pending', 'unresolved', 'verified', 'resolved', 'rejected'];
+            
+            if (!allowedStatuses.includes(status.toLowerCase())) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Invalid status. Allowed: ${allowedStatuses.join(', ')}`,
+                });
+            }
+            
+            finalStatus = normalizeStatus(status);
+        } 
+        // BARANGAY ADMIN (role_id = 2): Can only set to Verified or Rejected
+        else if (role_id === ROLES.BARANGAY_ADMIN) {
             const allowed = ['verified', 'rejected'];
+            
             if (!allowed.includes(status.toLowerCase())) {
                 return res.status(400).json({
                     success: false,
                     message: 'Barangay Admin can only set status to Verified or Rejected.',
                 });
             }
-            finalStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-        } else if (role_id === ROLES.CENTRAL_ADMIN) {
-            finalStatus = COMPLAINT_STATUS.RESOLVED;
-        } else {
+            
+            finalStatus = normalizeStatus(status);
+        } 
+        else {
             return res.status(403).json({
                 success: false,
                 message: 'You do not have permission to update complaint status.',
@@ -332,7 +438,7 @@ exports.getComplaintsOverview = async (req, res, next) => {
             },
         ]);
 
-        const result = { verified: 0, resolved: 0, rejected: 0, pending: 0 };
+        const result = { verified: 0, resolved: 0, rejected: 0, pending: 0, unresolved: 0 };
         stats.forEach((s) => {
             if (result.hasOwnProperty(s._id)) {
                 result[s._id] = s.count;
