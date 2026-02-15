@@ -1,6 +1,6 @@
 /**
  * CentralAdminDashboard.jsx — Central Admin Dashboard
- * Matching the original LAMP wireframe design
+ * Enhanced with dynamic stats and full complaint status control
  */
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
@@ -18,12 +18,24 @@ const CentralAdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('advisories');
     const [searchTerm, setSearchTerm] = useState('');
     const [showAdvisoryModal, setShowAdvisoryModal] = useState(false);
-    const [stats, setStats] = useState({
+    
+    // Separate stats for advisories and complaints
+    const [advisoryStats, setAdvisoryStats] = useState({
         total: 0,
         upcoming: 0,
         ongoing: 0,
         resolved: 0
     });
+    
+    const [complaintStats, setComplaintStats] = useState({
+        total: 0,
+        pending: 0,
+        unresolved: 0,
+        verified: 0,
+        resolved: 0,
+        rejected: 0
+    });
+    
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -40,7 +52,8 @@ const CentralAdminDashboard = () => {
             const compData = compRes.success ? compRes.data : (Array.isArray(compRes) ? compRes : []);
             setAdvisories(advData);
             setComplaints(compData);
-            calculateStats(advData);
+            calculateAdvisoryStats(advData);
+            calculateComplaintStats(compData);
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
@@ -48,12 +61,23 @@ const CentralAdminDashboard = () => {
         }
     };
 
-    const calculateStats = (data) => {
-        setStats({
+    const calculateAdvisoryStats = (data) => {
+        setAdvisoryStats({
             total: data.length,
             upcoming: data.filter(a => (a.status || '').toLowerCase() === 'upcoming').length,
             ongoing: data.filter(a => (a.status || '').toLowerCase() === 'ongoing').length,
             resolved: data.filter(a => (a.status || '').toLowerCase() === 'resolved').length
+        });
+    };
+
+    const calculateComplaintStats = (data) => {
+        setComplaintStats({
+            total: data.length,
+            pending: data.filter(c => (c.status || '').toLowerCase() === 'pending').length,
+            unresolved: data.filter(c => (c.status || '').toLowerCase() === 'unresolved').length,
+            verified: data.filter(c => (c.status || '').toLowerCase() === 'verified').length,
+            resolved: data.filter(c => (c.status || '').toLowerCase() === 'resolved').length,
+            rejected: data.filter(c => (c.status || '').toLowerCase() === 'rejected').length
         });
     };
 
@@ -75,7 +99,10 @@ const CentralAdminDashboard = () => {
         try {
             await complaintService.updateStatus(complaintId, status);
             fetchData();
-        } catch (err) { console.error(err); }
+        } catch (err) { 
+            console.error(err);
+            alert('Failed to update status. Please try again.');
+        }
     };
 
     const filteredAdvisories = advisories.filter(a =>
@@ -108,6 +135,9 @@ const CentralAdminDashboard = () => {
         if (start && end) return `${start} — ${end}`;
         return start || end || 'N/A';
     };
+
+    // Determine which stats to display based on active tab
+    const currentStats = activeTab === 'advisories' ? advisoryStats : complaintStats;
 
     if (loading) {
         return (
@@ -196,24 +226,50 @@ const CentralAdminDashboard = () => {
                 <div className="monitoring-section">
                     <h2 className="monitoring-title">MONITORING DASHBOARD</h2>
 
-                    <div className="stats-grid">
-                        <div className="stat-card">
-                            <div className="stat-label">TOTAL ADVISORIES</div>
-                            <div className="stat-value">{stats.total}</div>
+                    {/* Dynamic Stats Cards */}
+                    {activeTab === 'advisories' ? (
+                        <div className="stats-grid">
+                            <div className="stat-card">
+                                <div className="stat-label">TOTAL ADVISORIES</div>
+                                <div className="stat-value">{advisoryStats.total}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">UPCOMING</div>
+                                <div className="stat-value">{advisoryStats.upcoming}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">ONGOING</div>
+                                <div className="stat-value">{advisoryStats.ongoing}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">RESOLVED</div>
+                                <div className="stat-value">{advisoryStats.resolved}</div>
+                            </div>
                         </div>
-                        <div className="stat-card">
-                            <div className="stat-label">UPCOMING</div>
-                            <div className="stat-value">{stats.upcoming}</div>
+                    ) : (
+                        <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+                            <div className="stat-card">
+                                <div className="stat-label">PENDING</div>
+                                <div className="stat-value">{complaintStats.pending}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">UNRESOLVED</div>
+                                <div className="stat-value">{complaintStats.unresolved}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">VERIFIED</div>
+                                <div className="stat-value">{complaintStats.verified}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">RESOLVED</div>
+                                <div className="stat-value">{complaintStats.resolved}</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">REJECTED</div>
+                                <div className="stat-value">{complaintStats.rejected}</div>
+                            </div>
                         </div>
-                        <div className="stat-card">
-                            <div className="stat-label">ONGOING</div>
-                            <div className="stat-value">{stats.ongoing}</div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-label">RESOLVED</div>
-                            <div className="stat-value">{stats.resolved}</div>
-                        </div>
-                    </div>
+                    )}
 
                     {/* Tab Switcher */}
                     <div className="tab-switcher">
@@ -253,30 +309,35 @@ const CentralAdminDashboard = () => {
                                             </tr>
                                         ) : advisories.map((adv, idx) => (
                                             <tr key={adv.advisory_id || idx}>
-                                                <td>{advisories.length - idx}</td>
+                                                <td>{adv.advisory_id}</td>
                                                 <td>{adv.advisory_type || 'N/A'}</td>
-                                                <td>{adv.street_name}, {adv.brgy_number}</td>
+                                                <td>{adv.street_name || 'N/A'}, Brgy {adv.brgy_number || 'N/A'}</td>
                                                 <td>
                                                     <span className={`status-badge status-${(adv.status || '').toLowerCase()}`}>
                                                         {adv.status}
                                                     </span>
                                                 </td>
-                                                <td>{formatSchedule(adv)}</td>
+                                                <td style={{ fontSize: 12 }}>{formatSchedule(adv)}</td>
                                                 <td>
-                                                    <div className="action-buttons">
-                                                        {(adv.status || '').toLowerCase() === 'upcoming' && (
-                                                            <>
-                                                                <button className="action-btn ongoing-btn" onClick={() => handleSetOngoing(adv.advisory_id)}>Ongoing</button>
-                                                                <button className="action-btn resolve-btn" onClick={() => handleResolve(adv.advisory_id)}>Resolve</button>
-                                                            </>
-                                                        )}
-                                                        {(adv.status || '').toLowerCase() === 'ongoing' && (
-                                                            <button className="action-btn resolve-btn" onClick={() => handleResolve(adv.advisory_id)}>Resolve</button>
-                                                        )}
-                                                        {(adv.status || '').toLowerCase() === 'resolved' && (
-                                                            <span style={{ color: '#95a5a6', fontStyle: 'italic', fontSize: 13 }}>Resolved</span>
-                                                        )}
-                                                    </div>
+                                                    {(adv.status || '').toLowerCase() === 'upcoming' && (
+                                                        <button
+                                                            className="action-btn ongoing-btn"
+                                                            onClick={() => handleSetOngoing(adv.advisory_id)}
+                                                        >
+                                                            Set Ongoing
+                                                        </button>
+                                                    )}
+                                                    {['upcoming', 'ongoing'].includes((adv.status || '').toLowerCase()) && (
+                                                        <button
+                                                            className="action-btn resolve-btn"
+                                                            onClick={() => handleResolve(adv.advisory_id)}
+                                                        >
+                                                            Resolve
+                                                        </button>
+                                                    )}
+                                                    {(adv.status || '').toLowerCase() === 'resolved' && (
+                                                        <span style={{ color: '#999', fontSize: 13, fontStyle: 'italic' }}>—</span>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))}
@@ -310,7 +371,7 @@ const CentralAdminDashboard = () => {
                                                 <td>{comp.complaint_id}</td>
                                                 <td>{comp.complaint_type || 'N/A'}</td>
                                                 <td>{comp.complaint_description || 'N/A'}</td>
-                                                <td>{comp.street_name || ''}{comp.brgy_number ? `, ${comp.brgy_number}` : ''}</td>
+                                                <td>{comp.street_name || ''}{comp.brgy_number ? `, BRGY-${comp.brgy_number}` : ''}</td>
                                                 <td>{formatDate(comp.complaint_date)}</td>
                                                 <td>
                                                     <span className={`status-badge status-${(comp.status || '').toLowerCase()}`}>
@@ -318,20 +379,18 @@ const CentralAdminDashboard = () => {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {['pending', 'verified'].includes((comp.status || '').toLowerCase()) ? (
-                                                        <select
-                                                            className="status-select"
-                                                            value={comp.status}
-                                                            onChange={(e) => handleComplaintStatus(comp.complaint_id, e.target.value)}
-                                                        >
-                                                            <option value="pending">Pending</option>
-                                                            <option value="verified">Verified</option>
-                                                            <option value="resolved">Resolved</option>
-                                                            <option value="rejected">Rejected</option>
-                                                        </select>
-                                                    ) : (
-                                                        <span style={{ color: '#999', fontSize: 13, fontStyle: 'italic' }}>—</span>
-                                                    )}
+                                                    {/* Central admin can ALWAYS change status, even for resolved complaints */}
+                                                    <select
+                                                        className="status-select"
+                                                        value={(comp.status || '').toLowerCase()}
+                                                        onChange={(e) => handleComplaintStatus(comp.complaint_id, e.target.value)}
+                                                    >
+                                                        <option value="pending">Pending</option>
+                                                        <option value="unresolved">Unresolved</option>
+                                                        <option value="verified">Verified</option>
+                                                        <option value="resolved">Resolved</option>
+                                                        <option value="rejected">Rejected</option>
+                                                    </select>
                                                 </td>
                                             </tr>
                                         ))}

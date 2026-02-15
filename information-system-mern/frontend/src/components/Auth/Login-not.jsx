@@ -15,23 +15,25 @@ const Login = () => {
     const { login, isAuthenticated, user, loading, error: authError, setError } = useAuth();
     const navigate = useNavigate();
 
-    // ✅ FIXED: Redirect if already authenticated (ONLY in useEffect)
+    // Redirect if already authenticated (only after loading completes)
     useEffect(() => {
         if (!loading && isAuthenticated && user) {
-            const roleMap = {
-                1: '/user-homepage',
-                2: '/barangay-admin',
-                3: '/central-admin'
-            };
-            const path = roleMap[user.role_id] || '/user-homepage';
-            console.log('Login: Already authenticated, redirecting to', path);
-            navigate(path, { replace: true });
+            redirectByRole(user.role_id);
         }
-    }, [loading, isAuthenticated, user, navigate]);
+    }, [loading, isAuthenticated, user]);
 
     useEffect(() => {
         return () => setError(null);
     }, [setError]);
+
+    const redirectByRole = (roleId) => {
+        switch (roleId) {
+            case 1: navigate('/user-homepage'); break;
+            case 2: navigate('/barangay-admin'); break;
+            case 3: navigate('/central-admin'); break;
+            default: navigate('/user-homepage');
+        }
+    };
 
     // Show loading while checking authentication
     if (loading) {
@@ -45,9 +47,10 @@ const Login = () => {
         );
     }
 
-    // ✅ FIXED: Don't render if authenticated (but don't call navigate here)
+    // Redirect authenticated users immediately (after loading)
     if (!loading && isAuthenticated && user) {
-        return null; // useEffect above will handle the redirect
+        redirectByRole(user.role_id);
+        return null;
     }
 
     const validateForm = () => {
@@ -65,8 +68,10 @@ const Login = () => {
         setIsSubmitting(true);
         setError(null);
         try {
-            await login({ email: email.trim().toLowerCase(), password });
-            // ✅ REMOVED: Don't navigate here, let the useEffect handle it
+            const response = await login({ email: email.trim().toLowerCase(), password });
+            if (response && response.data) {
+                redirectByRole(response.data.role_id);
+            }
         } catch (err) {
             // Error handled by AuthContext
         } finally {

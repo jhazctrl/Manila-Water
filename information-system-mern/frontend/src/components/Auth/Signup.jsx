@@ -1,5 +1,5 @@
 /**
- * Signup.jsx — Glass morphism signup page matching wireframe
+ * Signup.jsx — FIXED - All hooks before early returns
  */
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -28,66 +28,38 @@ const Signup = () => {
     const { register, isAuthenticated, loading, error: authError, setError } = useAuth();
     const navigate = useNavigate();
 
-    // Redirect if already authenticated (only after loading completes)
+    // ✅ ALL HOOKS FIRST (before any early returns)
     useEffect(() => {
-        if (!loading && isAuthenticated) {
-            navigate('/user-homepage');
-        }
+        if (!loading && isAuthenticated) navigate('/user-homepage');
     }, [loading, isAuthenticated, navigate]);
 
+    useEffect(() => () => setError(null), [setError]);
+
     useEffect(() => {
-        return () => setError(null);
-    }, [setError]);
-
-    // Show loading while checking authentication
-    if (loading) {
-        return (
-            <div className="signup-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-                <div style={{ textAlign: 'center', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
-                    <div className="loader" style={{ width: '40px', height: '40px', border: '4px solid rgba(255,255,255,0.3)', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
-                    <p>Loading...</p>
-                </div>
-            </div>
-        );
-    }
-
-    // Redirect authenticated users immediately (after loading)
-    if (!loading && isAuthenticated) {
-        navigate('/user-homepage');
-        return null;
-    }
-
-    // Load barangays on mount
-    useEffect(() => {
-        const load = async () => {
-            try {
-                const res = await locationService.getBarangays();
-                if (res.success) setBarangays(res.data);
-            } catch (err) {
-                console.error('Failed to load barangays:', err);
-            }
-        };
-        load();
+        locationService.getBarangays().then(r => r.success && setBarangays(r.data)).catch(console.error);
     }, []);
 
-    // Load streets when barangay changes
     useEffect(() => {
         if (!form.barangayId) { setStreets([]); return; }
-        const load = async () => {
-            try {
-                const res = await locationService.getStreetsByBarangay(form.barangayId);
-                if (res.success) setStreets(res.data);
-            } catch (err) {
-                console.error('Failed to load streets:', err);
-            }
-        };
-        load();
+        locationService.getStreetsByBarangay(form.barangayId).then(r => r.success && setStreets(r.data)).catch(console.error);
     }, [form.barangayId]);
+
+    // Now early returns are safe
+    if (loading) return (
+        <div className="signup-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+            <div style={{ textAlign: 'center', color: 'white', fontFamily: "'Poppins', sans-serif" }}>
+                <div className="loader" style={{ width: '40px', height: '40px', border: '4px solid rgba(255,255,255,0.3)', borderTop: '4px solid white', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 20px' }}></div>
+                <p>Loading...</p>
+            </div>
+        </div>
+    );
+
+    if (!loading && isAuthenticated) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
-        if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+        setForm(prev => ({ ...prev, [name]: value }));
+        if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
     const validateForm = () => {
@@ -121,9 +93,8 @@ const Signup = () => {
                 barangayId: form.barangayId,
                 streetId: form.streetId,
             });
-            navigate('/user-homepage');
         } catch (err) {
-            // Error handled by AuthContext
+            console.error('Signup error:', err);
         } finally {
             setIsSubmitting(false);
         }
@@ -131,7 +102,6 @@ const Signup = () => {
 
     return (
         <div className="signup-page">
-            {/* Header */}
             <header>
                 <div className="logo-container">
                     <img src="/img/logo_sampaloc.png" alt="Sampaloc Logo" />
@@ -143,146 +113,41 @@ const Signup = () => {
                 </div>
                 <Link to="/" className="back-button">← Back</Link>
             </header>
-
-            {/* Glass Signup Card */}
             <div className="signup-container">
                 <img src="/img/logo_mnlwater.png" alt="Manila Water" />
-
-                {/* Auth Error */}
-                {authError && (
-                    <div style={{
-                        background: 'rgba(239, 68, 68, 0.2)',
-                        color: '#fca5a5',
-                        padding: '10px',
-                        borderRadius: '8px',
-                        marginBottom: '10px',
-                        fontSize: '13px',
-                        border: '1px solid rgba(239, 68, 68, 0.4)'
-                    }}>
-                        {authError}
-                    </div>
-                )}
-
+                {authError && <div style={{ background: 'rgba(239,68,68,0.2)', color: '#fca5a5', padding: '10px', borderRadius: '8px', marginBottom: '10px', fontSize: '13px', border: '1px solid rgba(239,68,68,0.4)' }}>{authError}</div>}
                 <form onSubmit={handleSubmit} noValidate>
-                    {/* First Name + Last Name */}
                     <div className="signup-row">
-                        <input
-                            type="text"
-                            name="firstName"
-                            placeholder="First Name"
-                            value={form.firstName}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                        />
-                        <input
-                            type="text"
-                            name="lastName"
-                            placeholder="Last Name"
-                            value={form.lastName}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                        />
+                        <input type="text" name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} disabled={isSubmitting} />
+                        <input type="text" name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} disabled={isSubmitting} />
                     </div>
-
-                    {/* Address */}
-                    <input
-                        type="text"
-                        name="address"
-                        placeholder="Unit/House No., Floor, Subdivision/Compound"
-                        value={form.address}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                    />
-
-                    {/* Barangay Dropdown */}
+                    <input type="text" name="address" placeholder="Unit/House No., Floor, Subdivision/Compound" value={form.address} onChange={handleChange} disabled={isSubmitting} />
                     <div className="custom_select">
-                        <select
-                            name="barangayId"
-                            value={form.barangayId}
-                            onChange={handleChange}
-                            disabled={isSubmitting}
-                        >
+                        <select name="barangayId" value={form.barangayId} onChange={handleChange} disabled={isSubmitting}>
                             <option value="">Barangay</option>
-                            {barangays.map((b) => (
-                                <option key={b.brgy_id} value={b.brgy_id}>
-                                    {b.brgy_number || b.brgy_name || `BRGY-${b.brgy_id}`}
-                                </option>
-                            ))}
+                            {barangays.map(b => <option key={b.brgy_id} value={b.brgy_id}>{b.brgy_number || b.brgy_name || `BRGY-${b.brgy_id}`}</option>)}
                         </select>
                     </div>
-
-                    {/* Street Dropdown */}
                     <div className="custom_select">
-                        <select
-                            name="streetId"
-                            value={form.streetId}
-                            onChange={handleChange}
-                            disabled={isSubmitting || !form.barangayId}
-                        >
+                        <select name="streetId" value={form.streetId} onChange={handleChange} disabled={isSubmitting || !form.barangayId}>
                             <option value="">Street</option>
-                            {streets.map((s) => (
-                                <option key={s.street_id} value={s.street_id}>
-                                    {s.street_name || `Street ${s.street_id}`}
-                                </option>
-                            ))}
+                            {streets.map(s => <option key={s.street_id} value={s.street_id}>{s.street_name || `Street ${s.street_id}`}</option>)}
                         </select>
                     </div>
-
-                    {/* Email */}
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        disabled={isSubmitting}
-                    />
-
-                    {/* Password + Confirm Password */}
+                    <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} disabled={isSubmitting} />
                     <div className="signup-row">
                         <div className="password-wrapper">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name="password"
-                                placeholder="Password"
-                                value={form.password}
-                                onChange={handleChange}
-                                disabled={isSubmitting}
-                            />
-                            <span
-                                className="toggle-password"
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                {showPassword ? '👁️' : '👁️‍🗨️'}
-                            </span>
+                            <input type={showPassword ? 'text' : 'password'} name="password" placeholder="Password" value={form.password} onChange={handleChange} disabled={isSubmitting} />
+                            <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>{showPassword ? '👁️' : '👁️‍🗨️'}</span>
                         </div>
                         <div className="password-wrapper">
-                            <input
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                name="confirmPassword"
-                                placeholder="Confirm Password"
-                                value={form.confirmPassword}
-                                onChange={handleChange}
-                                disabled={isSubmitting}
-                            />
-                            <span
-                                className="toggle-password"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
-                            </span>
+                            <input type={showConfirmPassword ? 'text' : 'password'} name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} disabled={isSubmitting} />
+                            <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>{showConfirmPassword ? '👁️' : '👁️‍🗨️'}</span>
                         </div>
                     </div>
-
-                    {/* Submit */}
-                    <button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? 'Signing up...' : 'Sign Up'}
-                    </button>
+                    <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Signing up...' : 'Sign Up'}</button>
                 </form>
-
-                <p>
-                    Already have an account? <Link to="/login">Log In</Link>
-                </p>
+                <p>Already have an account? <Link to="/login">Log In</Link></p>
             </div>
         </div>
     );

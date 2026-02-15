@@ -1,6 +1,6 @@
 /**
- * FileComplaintModal.jsx — Matches file-complaint-modal wireframe
- * Full overlay, white card, phone/address/problem/file inputs
+ * FileComplaintModal.jsx — FIXED VERSION
+ * Matches backend API expectations
  */
 import { useState, useEffect } from 'react';
 import locationService from '../../services/location.service';
@@ -8,13 +8,13 @@ import complaintService from '../../services/complaint.service';
 
 const FileComplaintModal = ({ onClose, onSuccess }) => {
     const [form, setForm] = useState({
-        phone: '',
-        address: '',
-        barangayId: '',
-        streetId: '',
-        waterProblemType: '',
-        duration: '',
-        description: '',
+        contact_no: '',
+        address_detail: '',
+        brgy_id: '',
+        street_id: '',
+        complaint_type: '',
+        complaint_duration: '',
+        complaint_description: '',
     });
     const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
@@ -36,17 +36,17 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
     }, []);
 
     useEffect(() => {
-        if (!form.barangayId) { setStreets([]); return; }
+        if (!form.brgy_id) { setStreets([]); return; }
         const load = async () => {
             try {
-                const res = await locationService.getStreetsByBarangay(form.barangayId);
+                const res = await locationService.getStreetsByBarangay(form.brgy_id);
                 if (res.success) setStreets(res.data);
             } catch (err) {
                 console.error('Failed to load streets:', err);
             }
         };
         load();
-    }, [form.barangayId]);
+    }, [form.brgy_id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,13 +66,15 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!form.phone.trim()) newErrors.phone = 'Phone number is required';
-        else if (!/^(\+63|0)\d{10}$/.test(form.phone.replace(/\s/g, ''))) newErrors.phone = 'Invalid phone format (e.g. +639123456789)';
-        if (!form.address.trim()) newErrors.address = 'Address is required';
-        if (!form.barangayId) newErrors.barangayId = 'Barangay is required';
-        if (!form.streetId) newErrors.streetId = 'Street is required';
-        if (!form.waterProblemType) newErrors.waterProblemType = 'Problem type is required';
-        if (!form.duration) newErrors.duration = 'Duration is required';
+        if (!form.contact_no.trim()) newErrors.contact_no = 'Contact number is required';
+        else if (!/^(09|\+639)\d{9}$/.test(form.contact_no.replace(/\s|-/g, ''))) {
+            newErrors.contact_no = 'Invalid phone format (e.g. 09123456789)';
+        }
+        if (!form.address_detail.trim()) newErrors.address_detail = 'Address is required';
+        if (!form.brgy_id) newErrors.brgy_id = 'Barangay is required';
+        if (!form.street_id) newErrors.street_id = 'Street is required';
+        if (!form.complaint_type) newErrors.complaint_type = 'Problem type is required';
+        if (!form.complaint_duration) newErrors.complaint_duration = 'Duration is required';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -82,20 +84,27 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
         if (!validateForm()) return;
         setIsSubmitting(true);
         setSubmitError('');
+        
         try {
             const formData = new FormData();
-            formData.append('phone', form.phone.trim());
-            formData.append('address', form.address.trim());
-            formData.append('brgy_id', form.barangayId);
-            formData.append('street_id', form.streetId);
-            formData.append('water_problem_type', form.waterProblemType);
-            formData.append('duration', form.duration);
-            formData.append('description', form.description.trim());
-            if (file) formData.append('attachment', file);
+            
+            // ✅ FIXED: Use correct field names that match backend
+            formData.append('contact_no', form.contact_no.trim());
+            formData.append('address_detail', form.address_detail.trim());
+            formData.append('brgy_id', form.brgy_id);
+            formData.append('street_id', form.street_id);
+            formData.append('complaint_type', form.complaint_type);
+            formData.append('complaint_duration', form.complaint_duration);
+            formData.append('complaint_description', form.complaint_description.trim());
+            
+            // ✅ FIXED: Use 'supporting_img' (not 'attachment')
+            if (file) formData.append('supporting_img', file);
 
-            await complaintService.submitComplaint(formData);
+            const response = await complaintService.submitComplaint(formData);
+            console.log('✅ Complaint submitted successfully:', response);
             onSuccess();
         } catch (err) {
+            console.error('❌ Complaint submission error:', err);
             setSubmitError(err.response?.data?.message || 'Failed to submit complaint. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -106,24 +115,19 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
     const selectClass = "w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-800 text-sm border border-gray-200 outline-none focus:border-teal-primary focus:ring-1 focus:ring-teal-primary/30 transition-all appearance-none cursor-pointer";
 
     const problemTypes = [
-        'No Water Supply',
-        'Low Water Pressure',
-        'Dirty/Cloudy Water',
-        'Leaking Pipe',
-        'Water Meter Issue',
-        'Billing Concern',
-        'Sewerage Issue',
-        'Others',
+        { id: 1, label: 'No Water Supply' },
+        { id: 2, label: 'Low Water Pressure' },
+        { id: 3, label: 'Discolored Water' },
+        { id: 4, label: 'Water Leakage' },
+        { id: 5, label: 'Others' },
     ];
 
     const durations = [
-        'Less than 1 hour',
-        '1 - 3 hours',
-        '3 - 6 hours',
-        '6 - 12 hours',
-        '12 - 24 hours',
-        'More than 24 hours',
-        'More than 3 days',
+        { id: 1, label: 'Less than 1 hour' },
+        { id: 2, label: '1-3 hours' },
+        { id: 3, label: '3-6 hours' },
+        { id: 4, label: '6-12 hours' },
+        { id: 5, label: 'More than 12 hours' },
     ];
 
     return (
@@ -135,7 +139,7 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
             <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-800">Water Problem Report</h2>
+                    <h2 className="text-lg font-bold text-gray-800">File a Complaint</h2>
                     <button
                         onClick={onClose}
                         className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors cursor-pointer"
@@ -154,25 +158,47 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
                         </div>
                     )}
 
-                    {/* Phone */}
+                    {/* Contact Number */}
                     <div>
-                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Phone Number</label>
-                        <input type="tel" name="phone" placeholder="+63 9XX XXX XXXX" value={form.phone} onChange={handleChange} disabled={isSubmitting} className={inputClass} />
-                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Contact Number *</label>
+                        <input 
+                            type="tel" 
+                            name="contact_no" 
+                            placeholder="09XX-XXX-XXXX" 
+                            value={form.contact_no} 
+                            onChange={handleChange} 
+                            disabled={isSubmitting} 
+                            className={inputClass} 
+                        />
+                        {errors.contact_no && <p className="text-red-500 text-xs mt-1">{errors.contact_no}</p>}
                     </div>
 
-                    {/* Address */}
+                    {/* Address Detail */}
                     <div>
-                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Unit/House No., Floor, Subdivision</label>
-                        <input type="text" name="address" placeholder="Unit/House No." value={form.address} onChange={handleChange} disabled={isSubmitting} className={inputClass} />
-                        {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Address Detail *</label>
+                        <input 
+                            type="text" 
+                            name="address_detail" 
+                            placeholder="Unit/House No., Floor, Subdivision" 
+                            value={form.address_detail} 
+                            onChange={handleChange} 
+                            disabled={isSubmitting} 
+                            className={inputClass} 
+                        />
+                        {errors.address_detail && <p className="text-red-500 text-xs mt-1">{errors.address_detail}</p>}
                     </div>
 
-                    {/* Barangay + Street (side by side) */}
+                    {/* Barangay + Street */}
                     <div className="flex gap-3">
                         <div className="flex-1">
-                            <label className="text-xs font-semibold text-gray-500 mb-1 block">Barangay</label>
-                            <select name="barangayId" value={form.barangayId} onChange={handleChange} disabled={isSubmitting} className={selectClass}>
+                            <label className="text-xs font-semibold text-gray-500 mb-1 block">Barangay *</label>
+                            <select 
+                                name="brgy_id" 
+                                value={form.brgy_id} 
+                                onChange={handleChange} 
+                                disabled={isSubmitting} 
+                                className={selectClass}
+                            >
                                 <option value="">Select Barangay</option>
                                 {barangays.map((b) => (
                                     <option key={b.brgy_id} value={b.brgy_id}>
@@ -180,11 +206,17 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
                                     </option>
                                 ))}
                             </select>
-                            {errors.barangayId && <p className="text-red-500 text-xs mt-1">{errors.barangayId}</p>}
+                            {errors.brgy_id && <p className="text-red-500 text-xs mt-1">{errors.brgy_id}</p>}
                         </div>
                         <div className="flex-1">
-                            <label className="text-xs font-semibold text-gray-500 mb-1 block">Street</label>
-                            <select name="streetId" value={form.streetId} onChange={handleChange} disabled={isSubmitting || !form.barangayId} className={selectClass}>
+                            <label className="text-xs font-semibold text-gray-500 mb-1 block">Street *</label>
+                            <select 
+                                name="street_id" 
+                                value={form.street_id} 
+                                onChange={handleChange} 
+                                disabled={isSubmitting || !form.brgy_id} 
+                                className={selectClass}
+                            >
                                 <option value="">Select Street</option>
                                 {streets.map((s) => (
                                     <option key={s.street_id} value={s.street_id}>
@@ -192,43 +224,63 @@ const FileComplaintModal = ({ onClose, onSuccess }) => {
                                     </option>
                                 ))}
                             </select>
-                            {errors.streetId && <p className="text-red-500 text-xs mt-1">{errors.streetId}</p>}
+                            {errors.street_id && <p className="text-red-500 text-xs mt-1">{errors.street_id}</p>}
                         </div>
                     </div>
 
-                    {/* Water Problem Type */}
+                    {/* Complaint Type */}
                     <div>
-                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Water Problem Type</label>
-                        <select name="waterProblemType" value={form.waterProblemType} onChange={handleChange} disabled={isSubmitting} className={selectClass}>
+                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Complaint Type *</label>
+                        <select 
+                            name="complaint_type" 
+                            value={form.complaint_type} 
+                            onChange={handleChange} 
+                            disabled={isSubmitting} 
+                            className={selectClass}
+                        >
                             <option value="">Select Problem Type</option>
                             {problemTypes.map((t) => (
-                                <option key={t} value={t}>{t}</option>
+                                <option key={t.id} value={t.id}>{t.label}</option>
                             ))}
                         </select>
-                        {errors.waterProblemType && <p className="text-red-500 text-xs mt-1">{errors.waterProblemType}</p>}
+                        {errors.complaint_type && <p className="text-red-500 text-xs mt-1">{errors.complaint_type}</p>}
                     </div>
 
                     {/* Duration */}
                     <div>
-                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Duration of Problem</label>
-                        <select name="duration" value={form.duration} onChange={handleChange} disabled={isSubmitting} className={selectClass}>
+                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Duration *</label>
+                        <select 
+                            name="complaint_duration" 
+                            value={form.complaint_duration} 
+                            onChange={handleChange} 
+                            disabled={isSubmitting} 
+                            className={selectClass}
+                        >
                             <option value="">Select Duration</option>
                             {durations.map((d) => (
-                                <option key={d} value={d}>{d}</option>
+                                <option key={d.id} value={d.id}>{d.label}</option>
                             ))}
                         </select>
-                        {errors.duration && <p className="text-red-500 text-xs mt-1">{errors.duration}</p>}
+                        {errors.complaint_duration && <p className="text-red-500 text-xs mt-1">{errors.complaint_duration}</p>}
                     </div>
 
                     {/* Description */}
                     <div>
                         <label className="text-xs font-semibold text-gray-500 mb-1 block">Additional Details (optional)</label>
-                        <textarea name="description" placeholder="Describe the issue..." value={form.description} onChange={handleChange} disabled={isSubmitting} rows={3} className={inputClass + " resize-none"} />
+                        <textarea 
+                            name="complaint_description" 
+                            placeholder="Describe the issue..." 
+                            value={form.complaint_description} 
+                            onChange={handleChange} 
+                            disabled={isSubmitting} 
+                            rows={3} 
+                            className={inputClass + " resize-none"} 
+                        />
                     </div>
 
                     {/* File Upload */}
                     <div>
-                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Attach Photo (optional, max 5MB)</label>
+                        <label className="text-xs font-semibold text-gray-500 mb-1 block">Supporting Image (optional, max 5MB)</label>
                         <input
                             type="file"
                             accept="image/jpeg,image/png,image/webp"

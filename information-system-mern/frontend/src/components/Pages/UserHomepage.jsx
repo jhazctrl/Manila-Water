@@ -137,10 +137,11 @@ const UserHomepage = () => {
 
     return (
         <div className="user-homepage" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            {/* ═══ HEADER (Outside sections so it's always visible) ═══ */}
+            <Header showLogout />
+
             {/* ═══ TOP SECTION: Advisory ═══ */}
             <section className="advisory-section">
-                <Header showLogout />
-
                 <h2>WATER INTERRUPTION ADVISORIES</h2>
 
                 {/* Search Bar */}

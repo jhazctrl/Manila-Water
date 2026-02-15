@@ -15,7 +15,8 @@ const locationService = {
     },
 
     getStreetsByBarangay: async (brgyId) => {
-        const response = await api.get(`/locations/streets/${brgyId}`);
+        // ✅ FIXED: Use correct URL pattern that matches backend route
+        const response = await api.get(`/locations/barangays/${brgyId}/streets`);
         return response.data;
     },
 };
